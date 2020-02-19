@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="QuestionsAndAnswers.AnswerButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:QuestionsAndAnswers"
+             mc:Ignorable="d" 
+             d:DesignHeight="32" d:DesignWidth="200">
+
+    <Grid Background="#545d6a" Margin="10 10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="50"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <TextBox x:Name="textBox" Grid.Column="0" HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="" VerticalAlignment="Center" TextAlignment="Center" FontSize="16"  Background="#6798f1" Foreground="White" Height="30"/>
+        <Button x:Name="checkButton" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Height="30" Click="CheckButton_Click">
+            <Button.Background>
+                <ImageBrush x:Name="checkButtonBrush"/>
+            </Button.Background>
+        </Button>
+
+
+    </Grid>
+</UserControl>

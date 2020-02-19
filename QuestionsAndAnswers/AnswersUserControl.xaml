@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="QuestionsAndAnswers.AnswersUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:QuestionsAndAnswers"
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="1000">
+    <Grid Background="#808499">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="170*"/>
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Row="0" Background="#65687c">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button x:Name="plusButton" Grid.Column="0" BorderBrush="Black" Click="PlusButton_Click">
+                    <Button.Background>
+                        <ImageBrush x:Name="plusButtonBrush"/>
+                    </Button.Background>
+                </Button>
+
+                <Button Name="removeButton" Grid.Column="1" BorderBrush="Black" Click="RemoveButton_Click">
+                    <Button.Background>
+                        <ImageBrush x:Name="removeButtonBrush"/>
+                    </Button.Background>
+                </Button>
+            </Grid>
+        </DockPanel>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Height="auto" Width="auto">
+            <Grid Name="listViewGrid" Grid.Row="1" Background="#a6a8b7">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+            </Grid>
+        </ScrollViewer>
+
+        
+
+    </Grid>
+</UserControl>

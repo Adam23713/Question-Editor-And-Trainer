@@ -1,0 +1,59 @@
+﻿<Window x:Class="QuestionsAndAnswers.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:QuestionsAndAnswers"
+        mc:Ignorable="d"
+        Title="Questions Editor" Height="800" Width="1000">
+
+    <Grid x:Name="mainGrid" Background="#4f5262">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Row="0" HorizontalAlignment="Stretch">
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="_File">
+                    <MenuItem Header="_New" Click="CreateNewClick"/>
+                    <MenuItem Header="_Open" Click="OpenClick" />
+                    <MenuItem Header="_Save" Click="SaveClick"/>
+                    <MenuItem Header="_Save As" Click="SaveAsClick"/>
+                    <Separator />
+                    <MenuItem Header="_Exit" Click="MenuItem_Click" />
+                </MenuItem>
+            </Menu>
+        </DockPanel>
+        <Label FontSize="25" Grid.Row="1" Foreground="White" Padding="0 10 0 10">The Question:</Label>
+        <TextBox x:Name="questionTextBox" Background="#808499" Height="125" Foreground="White" FontSize="20" Grid.Row="2" AcceptsReturn="True" TextChanged="QuestionTextBox_TextChanged" />
+
+        <DockPanel x:Name="imageDockPanel" Grid.Row="3" Background="#2e3137" Drop="Image_Drop" AllowDrop="true">
+            <Image Name="image" Height="300" Width="auto"/>
+        </DockPanel>
+
+        <Label FontSize="25" Grid.Row="4" Foreground="White" Padding="0 0 0 10">The Answers:</Label>
+        <local:AnswersUserControl x:Name="answersDockPanel" Grid.Row="5" Height="auto" Width="auto" Padding="0 0 0 10">
+            
+        </local:AnswersUserControl>
+
+       <Grid Grid.Row="6" Height="auto" Width="auto">
+            <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="450*"></ColumnDefinition>
+            <ColumnDefinition Width="50*"></ColumnDefinition>
+            <ColumnDefinition Width="450*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Button Width="150" Margin="10 5" HorizontalAlignment="Left" BorderBrush="Black" BorderThickness="1" Grid.Column="0" Content="Previous" Background="#FF706D76" Foreground="White" FontSize="18" Name="previousButton" Click="PreviousButton_Click"></Button>
+            <Label FontSize="16" Foreground="White" Name="indexLabel" Grid.Column="1"> 0 / 0</Label> 
+            <Button Width="150" Margin="10 5" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="1" Grid.Column="2" Content="New" Background="#FF706D76" Foreground="White" FontSize="18" Name="nextButton" Click="NextButton_Click"></Button>
+
+        </Grid>
+
+    </Grid>
+</Window>
