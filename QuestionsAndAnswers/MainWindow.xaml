@@ -23,21 +23,28 @@
                 <MenuItem Header="_File">
                     <MenuItem Header="_New" Click="CreateNewClick"/>
                     <MenuItem Header="_Open" Click="OpenClick" />
-                    <MenuItem Header="_Save" Click="SaveClick"/>
-                    <MenuItem Header="_Save As" Click="SaveAsClick"/>
+                    <MenuItem x:Name="saveButton" Header="_Save" Click="SaveClick"/>
+                    <MenuItem x:Name="saveAsButton" Header="_Save As" Click="SaveAsClick"/>
                     <Separator />
                     <MenuItem Header="_Exit" Click="MenuItem_Click" />
                 </MenuItem>
+                <MenuItem Name="editMenuItem" Header="_Edit">
+                    <MenuItem Header="_Add New Question" Click="CreateNewQuestionClick"/>
+                    <MenuItem Header="_Delete Question" Click="DeleteQuestionClick" />
+                </MenuItem>
+                <MenuItem Name="helpMenuItem" Header="_Help" Click="HelpMenuItem_Click">
+                    <MenuItem Header="_About"/>
+                </MenuItem>
             </Menu>
         </DockPanel>
-        <Label FontSize="25" Grid.Row="1" Foreground="White" Padding="0 10 0 10">The Question:</Label>
+        <Label FontSize="20" Grid.Row="1" Foreground="White" Padding="0 10 0 10">The Question:</Label>
         <TextBox x:Name="questionTextBox" Background="#808499" Height="125" Foreground="White" FontSize="20" Grid.Row="2" AcceptsReturn="True" TextChanged="QuestionTextBox_TextChanged" />
 
         <DockPanel x:Name="imageDockPanel" Grid.Row="3" Background="#2e3137" Drop="Image_Drop" AllowDrop="true">
             <Image Name="image" Height="300" Width="auto"/>
         </DockPanel>
 
-        <Label FontSize="25" Grid.Row="4" Foreground="White" Padding="0 0 0 10">The Answers:</Label>
+        <Label FontSize="20" Grid.Row="4" Foreground="White" Padding="0 0 0 10">The Answers:</Label>
         <local:AnswersUserControl x:Name="answersDockPanel" Grid.Row="5" Height="auto" Width="auto" Padding="0 0 0 10">
             
         </local:AnswersUserControl>
@@ -45,7 +52,7 @@
        <Grid Grid.Row="6" Height="auto" Width="auto">
             <Grid.ColumnDefinitions>
             <ColumnDefinition Width="450*"></ColumnDefinition>
-            <ColumnDefinition Width="50*"></ColumnDefinition>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
             <ColumnDefinition Width="450*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 

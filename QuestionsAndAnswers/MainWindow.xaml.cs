@@ -21,14 +21,16 @@ namespace QuestionsAndAnswers
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly string VERSION = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + " Beta";
+
         private string FileName
         {
             get { return fileName; }
             set
             {
                 fileName = value;
-                if (fileName != string.Empty) Title = "Questions Editor - " + fileName;
-                else Title = "Questions Editor";
+                if (fileName != string.Empty) Title = "Questions Editor "+ VERSION + " - " + fileName;
+                else Title = "Questions Editor " + VERSION;
             }
         }
         private string fileName = string.Empty;
@@ -46,6 +48,8 @@ namespace QuestionsAndAnswers
             this.Icon = Common.QuestionsAndAnswers.ToBitmapImage(Properties.Resources.editor);
             loadNoImage();
             originalBrush = nextButton.Background;
+            FileName = string.Empty;
+            this.Closing += CloseProgram;
         }
 
         private void SetControlsEnable(bool value)
@@ -55,6 +59,9 @@ namespace QuestionsAndAnswers
             questionTextBox.IsEnabled = value;
             imageDockPanel.IsEnabled = value;
             answersDockPanel.IsEnabled = value;
+            editMenuItem.IsEnabled = value;
+            saveButton.IsEnabled = value;
+            saveAsButton.IsEnabled = value;
         }
 
         void loadNewImage(BitmapImage bitmap)
@@ -71,7 +78,27 @@ namespace QuestionsAndAnswers
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            CloseProgram(null, null);
+        }
+
+        private void CloseProgram(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (questionsAndAnswers != null && questionsAndAnswers.Count > 0)
+            {
+                var result = MessageBox.Show("All unsaved data will be lost!\nWould you like continue?", "Warrning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                    Environment.Exit(0);
+                }
+                else
+                {
+                    if(sender != null) e.Cancel = true;
+                }
+            }
+            else
+            {
+                Environment.Exit(0);
+            }
         }
 
         private void SaveAsClickSaveClick(object sender, RoutedEventArgs e)
@@ -129,13 +156,11 @@ namespace QuestionsAndAnswers
                 if (result == MessageBoxResult.Yes)
                 {
                     StartNewTask();
-                    nextButton.Background = selectedBrush;
                 }
             }
             else
             {
                 StartNewTask();
-                nextButton.Background = selectedBrush;
             }
         }
 
@@ -148,7 +173,6 @@ namespace QuestionsAndAnswers
             SetControlsEnable(true);
             UpdateIndexLabel();
             CheckNextButton();
-            nextButton.Content = "New";
             ResetControls();
             previousButton.IsEnabled = false;
         }
@@ -210,7 +234,14 @@ namespace QuestionsAndAnswers
 
         private void UpdateIndexLabel()
         {
-            indexLabel.Content = currentIndex.ToString() + " / " + (questionsAndAnswers.Count).ToString();
+            if (currentIndex == questionsAndAnswers.Count)
+            {
+                indexLabel.Content = "New Question (" + (questionsAndAnswers.Count + 1).ToString() + ")";
+            }
+            else
+            {
+                indexLabel.Content = (currentIndex + 1).ToString() + " / " + (questionsAndAnswers.Count).ToString();
+            }
         }
 
         private void LoadQuestion()
@@ -256,17 +287,22 @@ namespace QuestionsAndAnswers
             if (SaveCurrentQuestion())
             {
                 currentIndex++;
-                if (currentIndex < questionsAndAnswers.Count)
-                {
-                    LoadQuestion();
-                }
-                else
-                {
-                    ResetControls();
-                }
-                CheckNextButton();
+                CreateOrLoadQuestion();
             }
             UpdateIndexLabel();
+        }
+
+        private void CreateOrLoadQuestion()
+        {
+            if (currentIndex < questionsAndAnswers.Count)
+            {
+                LoadQuestion();
+            }
+            else
+            {
+                ResetControls();
+            }
+            CheckNextButton();
         }
 
         private void PreviousButton_Click(object sender, RoutedEventArgs e)
@@ -323,6 +359,12 @@ namespace QuestionsAndAnswers
                 nextButton.Content = "New";
                 nextButton.Background = selectedBrush;
             }
+            else if (currentIndex == 0 && questionsAndAnswers.Count == 0)
+            {
+                nextButton.Content = "New";
+                nextButton.IsEnabled = false;
+                nextButton.Background = selectedBrush;
+            }
             else if (currentIndex == questionsAndAnswers.Count && questionsAndAnswers.Count != 0)
             {
                 nextButton.Content = "New";
@@ -338,7 +380,7 @@ namespace QuestionsAndAnswers
 
         private void QuestionTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (currentIndex == questionsAndAnswers.Count && questionsAndAnswers.Count != 0)
+            if (currentIndex == questionsAndAnswers.Count)
             {
                 if (questionTextBox.Text != string.Empty)
                 {
@@ -354,6 +396,60 @@ namespace QuestionsAndAnswers
         private void SaveAsClick(object sender, RoutedEventArgs e)
         {
             SaveDataToFile(true);
+        }
+
+        private void CreateNewQuestionClick(object sender, RoutedEventArgs e)
+        {
+            if (SaveCurrentQuestion())
+            {
+                currentIndex = questionsAndAnswers.Count;
+                CreateOrLoadQuestion();
+                UpdateIndexLabel();
+            }
+        }
+
+        private void DeleteQuestion()
+        {
+            if (questionsAndAnswers.Count == 0 || currentIndex == questionsAndAnswers.Count)
+            {
+                MessageBox.Show("There are no questions", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            var result = MessageBox.Show("Are you sure to delete this question?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                try
+                {
+
+                    questionsAndAnswers.RemoveAt(currentIndex);
+                    if (currentIndex > 0)
+                    {
+                        currentIndex -= 1;
+                    }
+                    else
+                    {
+                        currentIndex = 0;
+                    }
+                    CreateOrLoadQuestion();
+                    UpdateIndexLabel();
+                    CheckNextButton();
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void DeleteQuestionClick(object sender, RoutedEventArgs e)
+        {
+            DeleteQuestion();
+        }
+
+        private void HelpMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            new AboutBoxWindow().ShowDialog();
         }
     }
 }

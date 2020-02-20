@@ -9,6 +9,11 @@ using System.Drawing.Imaging;
 
 namespace Common
 {
+    public class Version
+    {
+        public static readonly string VERSION = "1.0.0";
+    }
+
     public class QuestionAndAnswer
     {
         public bool NoImage { get; set; } = true;
@@ -64,7 +69,6 @@ namespace Common
 
         }
     }
-
 
     public class QuestionsAndAnswers
     {
