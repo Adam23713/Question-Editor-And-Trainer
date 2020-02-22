@@ -20,9 +20,11 @@ namespace QuestionsAndAnswers
     /// </summary>
     public partial class AnswersUserControl : UserControl
     {
+        private bool pushedTemplateButton = false;
         private int currentRowIndex = -1;
         private int currentColumnIndex = 0;
         private List<AnswerButton> answersButtons = new List<AnswerButton>();
+        private List<string> templateAnswers = null;
 
         public AnswersUserControl()
         {
@@ -37,11 +39,17 @@ namespace QuestionsAndAnswers
             var acceptImg = Properties.Resources.accept;
             plusButtonBrush.ImageSource = Common.QuestionsAndAnswers.ToBitmapImage(plusImg);
             removeButtonBrush.ImageSource = Common.QuestionsAndAnswers.ToBitmapImage(removeImg);
+            useTemplateButtonBrush.Source = Common.QuestionsAndAnswers.ToBitmapImage(acceptImg);
         }
 
         public void SetAnswers(List<Common.Answer> answers)
         {
-            Reset();
+            Reset(false);
+            SetAnswersWithoutReset(answers);
+        }
+
+        private void SetAnswersWithoutReset(List<Common.Answer> answers)
+        {
             foreach (var answer in answers)
             {
                 AddNewAnswer();
@@ -51,12 +59,21 @@ namespace QuestionsAndAnswers
             }
         }
 
-        public void Reset()
+        public void Reset(bool useDefault = true)
         {
             currentRowIndex = -1;
             currentColumnIndex = 0;
             listViewGrid.Children.Clear();
             answersButtons = new List<AnswerButton>();
+            if (useDefault && templateAnswers != null)
+            {
+                List<Common.Answer> answers = new List<Common.Answer>();
+                foreach (var item in templateAnswers)
+                {
+                    answers.Add(new Common.Answer(item, false));
+                }
+                SetAnswersWithoutReset(answers);
+            }
         }
 
         public List<Common.Answer> GetAnswers()
@@ -140,6 +157,29 @@ namespace QuestionsAndAnswers
             {
                 currentColumnIndex = 0;
             }
+        }
+
+        private void UseTemplateButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (answersButtons == null || answersButtons.Count == 0) return;
+
+            if (!pushedTemplateButton)
+            {
+                templateAnswers = new List<string>();
+                foreach (var item in answersButtons)
+                {
+                    templateAnswers.Add(item.Text);
+                }
+                useTemplateLabel.Content = "Reset template";
+                useTemplateButtonBrush.Source = Common.QuestionsAndAnswers.ToBitmapImage(Properties.Resources.reset);
+            }
+            else
+            {
+                templateAnswers = null;
+                useTemplateLabel.Content = "Use this template";
+                useTemplateButtonBrush.Source = Common.QuestionsAndAnswers.ToBitmapImage(Properties.Resources.accept);
+            }
+            pushedTemplateButton = !pushedTemplateButton;
         }
     }
 }

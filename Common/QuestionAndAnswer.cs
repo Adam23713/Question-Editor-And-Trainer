@@ -9,11 +9,6 @@ using System.Drawing.Imaging;
 
 namespace Common
 {
-    public class Version
-    {
-        public static readonly string VERSION = "1.0.0";
-    }
-
     public class QuestionAndAnswer
     {
         public bool NoImage { get; set; } = true;
@@ -156,6 +151,7 @@ namespace Common
 
         public static List<QuestionAndAnswer> LoadFromXml(string fileName)
         {
+            bool find = false;
             List<QuestionAndAnswer> list = new List<QuestionAndAnswer>();
 
             using (XmlReader reader = XmlReader.Create(fileName))
@@ -168,7 +164,12 @@ namespace Common
                     if (reader.IsStartElement())
                     {
                         string element = reader.Name.ToString();
-                        if (element.Contains(questionStartTag))
+
+                        if (element == rootStartTag)
+                        {
+                            find = true;
+                        }
+                        else if (element.Contains(questionStartTag))
                         {
                             currentAnswers = new List<Answer>();
                             currentAnswerObject = new QuestionAndAnswer();
@@ -206,6 +207,7 @@ namespace Common
                     }
                 }
             }
+            if (!find) throw new FileFormatException("Unable to read file: Bad file format");
             return list;
         }
 

@@ -23,6 +23,7 @@ namespace QuestionsAndAnswers
     {
         private readonly string VERSION = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + " Beta";
 
+        public bool isNewQuestion { get; private set; } = true;
         private string FileName
         {
             get { return fileName; }
@@ -34,7 +35,7 @@ namespace QuestionsAndAnswers
             }
         }
         private string fileName = string.Empty;
-
+        private bool listButtonPresed = false;
         private Brush originalBrush = null;
         private SolidColorBrush selectedBrush = new SolidColorBrush(Color.FromRgb(37, 144, 104));
         private int currentIndex = 0;
@@ -44,8 +45,10 @@ namespace QuestionsAndAnswers
         public MainWindow()
         {
             InitializeComponent();
+            listGridColumn.Visibility = Visibility.Collapsed;
             SetControlsEnable(false);
             this.Icon = Common.QuestionsAndAnswers.ToBitmapImage(Properties.Resources.editor);
+            listButtonBrush.ImageSource = Common.QuestionsAndAnswers.ToBitmapImage(Properties.Resources.menu);
             loadNoImage();
             originalBrush = nextButton.Background;
             FileName = string.Empty;
@@ -62,6 +65,7 @@ namespace QuestionsAndAnswers
             editMenuItem.IsEnabled = value;
             saveButton.IsEnabled = value;
             saveAsButton.IsEnabled = value;
+            listButton.IsEnabled = value;
         }
 
         void loadNewImage(BitmapImage bitmap)
@@ -177,27 +181,31 @@ namespace QuestionsAndAnswers
             previousButton.IsEnabled = false;
         }
 
+        private void LoadImageFromFile(string fileName)
+        {
+            try
+            {
+                List<string> supportedExtension = new List<string>() { ".png", ".jpg" };
+                string extension = System.IO.Path.GetExtension(fileName);
+                if (!supportedExtension.Contains(extension))
+                {
+                    MessageBox.Show("Extension not supported!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                loadNewImage(new BitmapImage(new Uri(fileName)));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         private void Image_Drop(object sender, DragEventArgs e)
         {
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
-                try
-                {
-                    List<string> supportedExtension = new List<string>() { ".png", ".jpg" };
-
-                    string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-                    string extension = System.IO.Path.GetExtension(files[0]);
-                    if (!supportedExtension.Contains(extension))
-                    {
-                        MessageBox.Show("Extension not supported!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                        return;
-                    }
-                    loadNewImage(new BitmapImage(new Uri(files[0])));
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                LoadImageFromFile(files[0]);
             }
         }
 
@@ -333,19 +341,26 @@ namespace QuestionsAndAnswers
             if (result == null) return;
             if ((bool)result)
             {
+                bool oldValue = mainGrid.IsEnabled;
                 try
                 {
                     mainGrid.IsEnabled = false;
+                    var list = Common.QuestionsAndAnswers.LoadFromXml(win.FileName);
                     StartNewTask();
-                    questionsAndAnswers = Common.QuestionsAndAnswers.LoadFromXml(win.FileName);
+                    questionsAndAnswers = list;
                     LoadQuestion();
                     CheckNextButton();
                     UpdateIndexLabel();
                     FileName = win.FileName;
                 }
-                catch(Exception ex)
+                catch(System.IO.FileFormatException ex)
                 {
-                    MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    mainGrid.IsEnabled = oldValue;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 mainGrid.IsEnabled = true;
             }
@@ -396,6 +411,11 @@ namespace QuestionsAndAnswers
         private void SaveAsClick(object sender, RoutedEventArgs e)
         {
             SaveDataToFile(true);
+        }
+
+        private void UpdateListView()
+        {
+            questionsList.ItemsSource = questionsAndAnswers;
         }
 
         private void CreateNewQuestionClick(object sender, RoutedEventArgs e)
@@ -450,6 +470,33 @@ namespace QuestionsAndAnswers
         private void HelpMenuItem_Click(object sender, RoutedEventArgs e)
         {
             new AboutBoxWindow().ShowDialog();
+        }
+
+        private void AddImageMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog win = new OpenFileDialog();
+            win.Filter = "Image file (*.png)|*.jpg";
+            bool? result = win.ShowDialog();
+            if (result == null) return;
+            if ((bool)result)
+            {
+                LoadImageFromFile(win.FileName);
+            }
+        }
+
+        private void ListButton_Click(object sender, RoutedEventArgs e)
+        {
+            return;
+
+            if (!listButtonPresed)
+            {
+                listGridColumn.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                listGridColumn.Visibility = Visibility.Collapsed;
+            }
+            listButtonPresed = !listButtonPresed;
         }
     }
 }

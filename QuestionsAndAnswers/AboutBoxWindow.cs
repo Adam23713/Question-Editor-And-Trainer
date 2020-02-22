@@ -15,6 +15,8 @@ namespace QuestionsAndAnswers
         public AboutBoxWindow()
         {
             InitializeComponent();
+            this.BackColor = Color.FromArgb(128, 132, 153);
+
             this.Text = String.Format("About {0}", AssemblyTitle);
             this.labelProductName.Text = "Questions Editor";
             this.labelVersion.Text = String.Format("Version {0}", AssemblyVersion);

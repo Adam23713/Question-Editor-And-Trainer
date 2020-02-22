@@ -8,8 +8,8 @@
              d:DesignHeight="200" d:DesignWidth="1000">
     <Grid Background="#808499">
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="170*"/>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="168*"/>
         </Grid.RowDefinitions>
 
         <DockPanel Grid.Row="0" Background="#65687c">
@@ -17,7 +17,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="50"/>
                     <ColumnDefinition Width="50"/>
-                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
@@ -31,6 +31,17 @@
                     <Button.Background>
                         <ImageBrush x:Name="removeButtonBrush"/>
                     </Button.Background>
+                </Button>
+
+                <Button Padding="0" x:Name="useTemplateButton" Grid.Column="2" BorderBrush="Black" Click="UseTemplateButton_Click">
+                    <Grid Background="#65687c">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Image Height="32" Grid.Column="0" Width="50" x:Name="useTemplateButtonBrush" Stretch="Uniform" />
+                        <Label x:Name="useTemplateLabel" FontSize="16" Grid.Column="1" VerticalAlignment="Center" Foreground="White">Use this template</Label>
+                    </Grid>
                 </Button>
             </Grid>
         </DockPanel>

@@ -8,6 +8,10 @@
         Title="Questions Editor" Height="800" Width="1000">
 
     <Grid x:Name="mainGrid" Background="#4f5262">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -18,7 +22,7 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <DockPanel Grid.Row="0" HorizontalAlignment="Stretch">
+        <DockPanel Grid.Row="0" HorizontalAlignment="Stretch" Grid.ColumnSpan="2">
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_File">
                     <MenuItem Header="_New" Click="CreateNewClick"/>
@@ -31,13 +35,42 @@
                 <MenuItem Name="editMenuItem" Header="_Edit">
                     <MenuItem Header="_Add New Question" Click="CreateNewQuestionClick"/>
                     <MenuItem Header="_Delete Question" Click="DeleteQuestionClick" />
+                    <MenuItem Header="_Add Image" Click="AddImageMenuItem_Click" />
                 </MenuItem>
                 <MenuItem Name="helpMenuItem" Header="_Help" Click="HelpMenuItem_Click">
                     <MenuItem Header="_About"/>
                 </MenuItem>
             </Menu>
         </DockPanel>
-        <Label FontSize="20" Grid.Row="1" Foreground="White" Padding="0 10 0 10">The Question:</Label>
+
+        <Grid x:Name="listGridColumn" Grid.Row="1" Grid.Column="1" Width="250" Grid.RowSpan="6">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Label FontSize="20" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Center" Foreground="White" Padding="0 10 0 10">Questions List</Label>
+            <ListView x:Name="questionsList" Grid.Row="1">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Questions" Width="auto" DisplayMemberBinding="{Binding Question}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+        
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition  Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label FontSize="20" Grid.Column="0" Foreground="White" Padding="0 10 0 10">The Question:</Label>
+            <Button Width="50" Name="listButton" Grid.Column="1" HorizontalAlignment="Right" Click="ListButton_Click">
+                <Button.Background>
+                    <ImageBrush x:Name="listButtonBrush"/>
+                </Button.Background>
+            </Button>
+        </Grid>
+
         <TextBox x:Name="questionTextBox" Background="#808499" Height="125" Foreground="White" FontSize="20" Grid.Row="2" AcceptsReturn="True" TextChanged="QuestionTextBox_TextChanged" />
 
         <DockPanel x:Name="imageDockPanel" Grid.Row="3" Background="#2e3137" Drop="Image_Drop" AllowDrop="true">
