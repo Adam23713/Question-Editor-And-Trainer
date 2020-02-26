@@ -185,8 +185,9 @@ namespace QuestionsAndAnswers
         {
             try
             {
-                List<string> supportedExtension = new List<string>() { ".png", ".jpg" };
+                List<string> supportedExtension = new List<string>() { ".png", ".jpg", ".jpeg" };
                 string extension = System.IO.Path.GetExtension(fileName);
+                extension = extension.ToLower();
                 if (!supportedExtension.Contains(extension))
                 {
                     MessageBox.Show("Extension not supported!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
