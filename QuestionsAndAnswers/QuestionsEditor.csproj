@@ -75,7 +75,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="AnswersButtons.xaml">
+    <Page Include="AnswerTextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -93,8 +93,8 @@
     <Compile Include="AboutBoxWindow.Designer.cs">
       <DependentUpon>AboutBoxWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="AnswersButtons.xaml.cs">
-      <DependentUpon>AnswersButtons.xaml</DependentUpon>
+    <Compile Include="AnswerTextBox.xaml.cs">
+      <DependentUpon>AnswerTextBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="AnswersUserControl.xaml.cs">
       <DependentUpon>AnswersUserControl.xaml</DependentUpon>

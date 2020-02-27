@@ -23,7 +23,7 @@ namespace QuestionsAndAnswers
         private bool pushedTemplateButton = false;
         private int currentRowIndex = -1;
         private int currentColumnIndex = 0;
-        private List<AnswerButton> answersButtons = new List<AnswerButton>();
+        private List<AnswerTextBox> answersButtons = new List<AnswerTextBox>();
         private List<string> templateAnswers = null;
 
         public AnswersUserControl()
@@ -64,7 +64,7 @@ namespace QuestionsAndAnswers
             currentRowIndex = -1;
             currentColumnIndex = 0;
             listViewGrid.Children.Clear();
-            answersButtons = new List<AnswerButton>();
+            answersButtons = new List<AnswerTextBox>();
             if (useDefault && templateAnswers != null)
             {
                 List<Common.Answer> answers = new List<Common.Answer>();
@@ -112,7 +112,7 @@ namespace QuestionsAndAnswers
 
         private void AddNewAnswer()
         {
-            AnswerButton bt = new AnswerButton();
+            AnswerTextBox bt = new AnswerTextBox();
             int size = answersButtons.Count;
             if (size % 2 == 0)
             {
@@ -142,7 +142,7 @@ namespace QuestionsAndAnswers
         {
             if (answersButtons.Count == 0) return;
 
-            AnswerButton bt = answersButtons.ElementAt(answersButtons.Count - 1);
+            AnswerTextBox bt = answersButtons.ElementAt(answersButtons.Count - 1);
             answersButtons.Remove(bt);
             listViewGrid.Children.Remove(bt);
 

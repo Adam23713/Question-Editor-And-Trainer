@@ -44,8 +44,11 @@ namespace Examiner
             InitializeComponent();
             FileName = string.Empty;
             this.Icon = Common.QuestionsAndAnswers.ToBitmapImage(Properties.Resources.Question);
+            InitEvents();
+        }
 
-
+        private void InitEvents()
+        {
             this.Closing += ExitFromApplication;
             filePanel.LoadData += LoadedQuestionsAndAnswers;
             filePanel.ExitFromProgram += ExitFromApplication;
@@ -56,14 +59,16 @@ namespace Examiner
             CurrentImage.Source = bitmap;
         }
 
-        void LoadedQuestionsAndAnswers(List<Common.QuestionAndAnswer> questionsAndAnswers, string fileName)
+        void LoadedQuestionsAndAnswers(List<Common.QuestionAndAnswer> list, string fileName)
         {
-            if (questionsAndAnswers == null || questionsAndAnswers.Count == 0) return;
+            if (list == null || list.Count == 0) return;
 
-            this.questionsAndAnswer = questionsAndAnswers;
+            FileName = fileName;
+            questionsAndAnswer = list;
             currentQuestion = this.questionsAndAnswer.ElementAt(0);
             LoadNewImage(currentQuestion.Picture);
             questionTextBox.Text = currentQuestion.Question;
+            choicesUserControl.ShowAnswers(currentQuestion.Answers);
         }
 
         void ExitFromApplication(object sender, System.ComponentModel.CancelEventArgs e)

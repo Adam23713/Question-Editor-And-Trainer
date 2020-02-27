@@ -18,14 +18,14 @@ namespace QuestionsAndAnswers
     /// <summary>
     /// Interaction logic for AnswersButtons.xaml
     /// </summary>
-    public partial class AnswerButton : UserControl
+    public partial class AnswerTextBox : UserControl
     {
         public bool Check { get; private set; } = false;
         public string Text { get { return textBox.Text; } set { textBox.Text = value; } }
         private BitmapImage rightImg = null;
         private BitmapImage wrongImg = null;
 
-        public AnswerButton()
+        public AnswerTextBox()
         {
             InitializeComponent();
             rightImg = Common.QuestionsAndAnswers.ToBitmapImage(Properties.Resources.right);
