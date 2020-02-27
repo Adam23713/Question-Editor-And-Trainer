@@ -49,7 +49,7 @@ namespace QuestionsAndAnswers
             SetControlsEnable(false);
             this.Icon = Common.QuestionsAndAnswers.ToBitmapImage(Properties.Resources.editor);
             listButtonBrush.ImageSource = Common.QuestionsAndAnswers.ToBitmapImage(Properties.Resources.menu);
-            loadNoImage();
+            LoadNoImage();
             originalBrush = nextButton.Background;
             FileName = string.Empty;
             this.Closing += CloseProgram;
@@ -68,13 +68,13 @@ namespace QuestionsAndAnswers
             listButton.IsEnabled = value;
         }
 
-        void loadNewImage(BitmapImage bitmap)
+        void LoadNewImage(BitmapImage bitmap)
         {
             currentImage = bitmap;
             image.Source = currentImage;
         }
 
-        void loadNoImage()
+        void LoadNoImage()
         {
             currentImage = null;
             image.Source = Common.QuestionsAndAnswers.ToBitmapImage(Properties.Resources.noImage);
@@ -193,7 +193,7 @@ namespace QuestionsAndAnswers
                     MessageBox.Show("Extension not supported!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
-                loadNewImage(new BitmapImage(new Uri(fileName)));
+                LoadNewImage(new BitmapImage(new Uri(fileName)));
             }
             catch (Exception ex)
             {
@@ -214,7 +214,7 @@ namespace QuestionsAndAnswers
         {
             questionTextBox.Text = string.Empty;
             answersDockPanel.Reset();
-            loadNoImage();
+            LoadNoImage();
         }
 
         private Common.QuestionAndAnswer GenerateObject()
@@ -264,11 +264,11 @@ namespace QuestionsAndAnswers
             answersDockPanel.SetAnswers(item.Answers);
             if (item.Picture != null)
             {
-                loadNewImage(item.Picture);
+                LoadNewImage(item.Picture);
             }
             else
             {
-                loadNoImage();
+                LoadNoImage();
             }
         }
 

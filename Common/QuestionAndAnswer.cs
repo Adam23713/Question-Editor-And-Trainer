@@ -16,6 +16,7 @@ namespace Common
         public string Question { get; set; } = string.Empty;
 
         public BitmapImage Picture { get; set; } = null;
+
         public string PictureUrl { get; set; } = null;
 
         public List<Answer> Answers { get; set; } = null;

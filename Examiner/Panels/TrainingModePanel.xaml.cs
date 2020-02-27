@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Examiner
+namespace Examiner.Panels
 {
     /// <summary>
-    /// Interaction logic for FileUserControl.xaml
+    /// Interaction logic for TrainingModePanel.xaml
     /// </summary>
-    public partial class FileUserControl : UserControl
+    public partial class TrainingModePanel : UserControl
     {
-        public FileUserControl()
+        public TrainingModePanel()
         {
             InitializeComponent();
         }

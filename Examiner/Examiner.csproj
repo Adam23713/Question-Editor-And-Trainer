@@ -76,7 +76,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="FilePanel.xaml">
+    <Page Include="Panels\FilePanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -91,15 +91,22 @@
     <Compile Include="ChoicesUserControl.xaml.cs">
       <DependentUpon>ChoicesUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FilePanel.xaml.cs">
+    <Compile Include="Panels\FilePanel.xaml.cs">
       <DependentUpon>FilePanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Panels\TrainingModePanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Panels\TrainingModePanel.xaml.cs">
+      <DependentUpon>TrainingModePanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -157,6 +164,27 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Licenses\HelpIcon.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Styles\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Licenses\SaveIcon.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\SaveAs.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Licenses\SaveAsIcon.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\exit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Licenses\ExitIcon.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

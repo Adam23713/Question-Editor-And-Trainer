@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Examiner"
+        xmlns:local1="clr-namespace:Examiner.Panels"
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="1000">
     <Grid x:Name="mainGrid" Background="#4f5262">
@@ -42,24 +43,24 @@
                 </Style>
             </TabControl.Resources>
             <TabItem Foreground="White" Header="File">
-                <Label Content="Content goes here..." />
+                <local:FileUserControl x:Name="filePanel"/>
             </TabItem>
             <TabItem Foreground="White" Header="Training Mode">
-                <Label Content="Content goes here..." />
+                <local1:TrainingModePanel />
             </TabItem>
             <TabItem Foreground="White" Header="Race Mode">
-                <Label Content="Content goes here..." />
+                <local1:TrainingModePanel />
             </TabItem>
             <TabItem Foreground="White" Header="View">
-                <Label Content="Content goes here..." />
+                <local1:TrainingModePanel />
             </TabItem>
             <TabItem Foreground="White" Header="Help">
-                <Label Content="Content goes here..." />
+                <local1:TrainingModePanel />
             </TabItem>
         </TabControl>
 
         <DockPanel x:Name="imageDockPanel" Grid.Row="1" Background="#2e3137">
-            <Image Name="image" Height="300" Width="auto"/>
+            <Image Name="CurrentImage" Height="300" Width="auto"/>
         </DockPanel>
         
         <TextBox x:Name="questionTextBox" Background="#808499" Height="125" Foreground="White" FontSize="20" Grid.Row="2" IsReadOnly="True" />

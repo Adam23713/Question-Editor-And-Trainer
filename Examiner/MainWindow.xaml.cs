@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -35,11 +36,39 @@ namespace Examiner
         private readonly string VERSION = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + " Beta";
         #endregion
 
+        private List<QuestionAndAnswer> questionsAndAnswer = null;
+        private QuestionAndAnswer currentQuestion = null;
+
         public MainWindow()
         {
             InitializeComponent();
             FileName = string.Empty;
             this.Icon = Common.QuestionsAndAnswers.ToBitmapImage(Properties.Resources.Question);
+
+
+            this.Closing += ExitFromApplication;
+            filePanel.LoadData += LoadedQuestionsAndAnswers;
+            filePanel.ExitFromProgram += ExitFromApplication;
+        }
+
+        void LoadNewImage(BitmapImage bitmap)
+        {
+            CurrentImage.Source = bitmap;
+        }
+
+        void LoadedQuestionsAndAnswers(List<Common.QuestionAndAnswer> questionsAndAnswers, string fileName)
+        {
+            if (questionsAndAnswers == null || questionsAndAnswers.Count == 0) return;
+
+            this.questionsAndAnswer = questionsAndAnswers;
+            currentQuestion = this.questionsAndAnswer.ElementAt(0);
+            LoadNewImage(currentQuestion.Picture);
+            questionTextBox.Text = currentQuestion.Question;
+        }
+
+        void ExitFromApplication(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Environment.Exit(0);
         }
     }
 }
