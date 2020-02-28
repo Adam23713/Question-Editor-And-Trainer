@@ -14,9 +14,10 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
 
-        <TabControl Margin="0" BorderThickness="0" Background="LightGray">
+        <TabControl x:Name ="tabControl"  Margin="0" BorderThickness="0" Background="LightGray">
             <TabControl.Resources>
                 <Style TargetType="TabItem">
                     <Setter Property="Template">
@@ -49,27 +50,34 @@
                 <local1:TrainingModePanel />
             </TabItem>
             <TabItem Foreground="White" Header="Race Mode">
-                <local1:TrainingModePanel />
+                <local1:RaceModePanel/>
             </TabItem>
             <TabItem Foreground="White" Header="View">
-                <local1:TrainingModePanel />
+                <local1:RaceModePanel/>
             </TabItem>
             <TabItem Foreground="White" Header="Help">
-                <local1:TrainingModePanel />
+                <local1:RaceModePanel/>
             </TabItem>
         </TabControl>
-
         <DockPanel x:Name="imageDockPanel" Grid.Row="1" Background="#2e3137">
             <Image Name="CurrentImage" Height="300" Width="auto"/>
         </DockPanel>
-        
         <TextBox x:Name="questionTextBox" Background="#808499" Height="125" Foreground="White" FontSize="20" Grid.Row="2" IsReadOnly="True" />
-        
         <Label FontSize="20" Grid.Row="3" Foreground="White" HorizontalAlignment="Center" Padding="0 10 0 10">Answers</Label>
+        <local:ChoicesUserControl x:Name="choicesUserControl" Grid.Row="4" Height="auto" Width="auto" />
 
-        <local:ChoicesUserControl x:Name="choicesUserControl" Grid.Row="4" Height="auto" Width="auto">
+        <Grid x:Name="statusBarGrid" Grid.Row="5" Height="auto" Width="auto" Visibility="Hidden">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="500*"></ColumnDefinition>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+                <ColumnDefinition Width="500*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
 
-        </local:ChoicesUserControl>
+            <Button Width="150" Margin="10 5" HorizontalAlignment="Left" BorderBrush="Black" BorderThickness="1" Grid.Column="0" Content="Previous" Background="#FF706D76" Foreground="White" FontSize="18" Name="previousButton"></Button>
+            <Label FontSize="16" Foreground="White" Name="indexLabel" Grid.Column="1">0 / 0</Label>
+            <Button Width="150" Margin="10 5" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="1" Grid.Column="2" Content="New" Background="#FF706D76" Foreground="White" FontSize="18" Name="nextButton"></Button>
+
+        </Grid>
 
     </Grid>
 </Window>

@@ -71,6 +71,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Panels\RaceModePanel.xaml.cs">
+      <DependentUpon>RaceModePanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TimeSetterUserControl.xaml.cs">
+      <DependentUpon>TimeSetterUserControl.xaml</DependentUpon>
+    </Compile>
     <Page Include="AnswerButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -97,6 +103,9 @@
     <Compile Include="ChoicesUserControl.xaml.cs">
       <DependentUpon>ChoicesUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ModeClasses\TaskMode.cs" />
+    <Compile Include="ModeClasses\TaskModeFactory.cs" />
+    <Compile Include="ModeClasses\TrainingMode.cs" />
     <Compile Include="Panels\FilePanel.xaml.cs">
       <DependentUpon>FilePanel.xaml</DependentUpon>
     </Compile>
@@ -104,7 +113,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Panels\RaceModePanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Panels\TrainingModePanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TimeSetterUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -191,6 +208,24 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Licenses\ExitIcon.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Start.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Licenses\StartIcon.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pause.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Licenses\PauseIcon.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Stop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Licenses\StopIcon.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

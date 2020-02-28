@@ -1,5 +1,6 @@
 ﻿using Common;
 using System;
+using Examiner.ModeClasses;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,13 +37,14 @@ namespace Examiner
         private readonly string VERSION = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + " Beta";
         #endregion
 
-        private List<QuestionAndAnswer> questionsAndAnswer = null;
-        private QuestionAndAnswer currentQuestion = null;
+        private TaskMode taskMode = null;
+        TaskModeFactory.Mode selectedTaskMode = TaskModeFactory.Mode.TrainingMode;
 
         public MainWindow()
         {
             InitializeComponent();
             FileName = string.Empty;
+            taskMode = TaskModeFactory.CreateMode(selectedTaskMode);
             this.Icon = Common.QuestionsAndAnswers.ToBitmapImage(Properties.Resources.Question);
             InitEvents();
         }
@@ -52,6 +54,9 @@ namespace Examiner
             this.Closing += ExitFromApplication;
             filePanel.LoadData += LoadedQuestionsAndAnswers;
             filePanel.ExitFromProgram += ExitFromApplication;
+            taskMode.LoadQuestion += LoadCurrentQuestion;
+            nextButton.Click += taskMode.NextQuestion;
+            previousButton.Click += taskMode.PreviousQuestion;
         }
 
         void LoadNewImage(BitmapImage bitmap)
@@ -64,11 +69,31 @@ namespace Examiner
             if (list == null || list.Count == 0) return;
 
             FileName = fileName;
-            questionsAndAnswer = list;
-            currentQuestion = this.questionsAndAnswer.ElementAt(0);
-            LoadNewImage(currentQuestion.Picture);
-            questionTextBox.Text = currentQuestion.Question;
-            choicesUserControl.ShowAnswers(currentQuestion.Answers);
+            taskMode.SetQuestionsAndAnswers(list);
+            SwitchPanel();
+        }
+
+        private void SwitchPanel()
+        {
+            if (selectedTaskMode == TaskModeFactory.Mode.TrainingMode)
+            {
+                tabControl.SelectedIndex = 1;
+            }
+            if (selectedTaskMode == TaskModeFactory.Mode.TrainingMode)
+            {
+                return;
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        private void LoadCurrentQuestion(QuestionAndAnswer question)
+        {
+            LoadNewImage(question.Picture);
+            questionTextBox.Text = question.Question;
+            choicesUserControl.ShowAnswers(question.Answers);
         }
 
         void ExitFromApplication(object sender, System.ComponentModel.CancelEventArgs e)
