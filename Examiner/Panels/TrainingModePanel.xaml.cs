@@ -20,9 +20,27 @@ namespace Examiner.Panels
     /// </summary>
     public partial class TrainingModePanel : UserControl
     {
+        public delegate void CheckBoxCheckedChanged(bool value);
+        public CheckBoxCheckedChanged SetNextButton;
+
         public TrainingModePanel()
         {
             InitializeComponent();
+        }
+
+        private void TaskTimeCheckBoxChanged(object sender, RoutedEventArgs e)
+        {
+            taskTimeLimitTimeSetter.IsEnabled = (bool)taskTimeLimitCheckBox.IsChecked;
+        }
+
+        private void OneQuestionTimeCheckBoxChanged(object sender, RoutedEventArgs e)
+        {
+            oneQuestionTimeLimitTimeSetter.IsEnabled = (bool)oneQuestionTimeLimitCheckBox.IsChecked;
+        }
+
+        private void AutoShiftingCheckBox_CheckedChange(object sender, RoutedEventArgs e)
+        {
+            SetNextButton?.Invoke(!(bool)autoShiftingCheckBox.IsChecked);
         }
     }
 }

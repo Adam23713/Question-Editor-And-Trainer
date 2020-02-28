@@ -7,8 +7,8 @@
              xmlns:local1="clr-namespace:Examiner"
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="1000">
-    
-    <Grid Background="LightGray" Height="50">
+
+    <Grid x:Name="mainGrid" Background="LightGray" Height="50">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50"/>
             <ColumnDefinition Width="15"/>
@@ -105,7 +105,7 @@
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <CheckBox Padding="0 0 20 0" Grid.Column="0" VerticalAlignment="Center" Width="auto" Content="Automatic shifting"></CheckBox>
+            <CheckBox Checked="AutoShiftingCheckBox_CheckedChange" Unchecked="AutoShiftingCheckBox_CheckedChange" x:Name="autoShiftingCheckBox" IsChecked="True" Padding="0 0 20 0" Grid.Column="0" VerticalAlignment="Center" Width="auto" Content="Automatic shifting"></CheckBox>
 
             <Grid Height="auto" Grid.Column="1" VerticalAlignment="Center">
                 <Grid.ColumnDefinitions>
@@ -116,14 +116,11 @@
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
-                <CheckBox Padding="0 0 10 0" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Width="auto" Content="Use time limit at task"></CheckBox>
-                <CheckBox Padding="0 0 10 0" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Width="auto" Content="Use time limit at questions"></CheckBox>
-
-                <local1:TimeSetterUserControl Grid.Column="1" Grid.Row="0"/>
-                <local1:TimeSetterUserControl Grid.Column="1" Grid.Row="1"/>
-
+                <CheckBox Checked="TaskTimeCheckBoxChanged" Unchecked="TaskTimeCheckBoxChanged" x:Name="taskTimeLimitCheckBox" Padding="0 0 10 0" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Width="auto" Content="Use time limit at task"></CheckBox>
+                <CheckBox Checked="OneQuestionTimeCheckBoxChanged" Unchecked="OneQuestionTimeCheckBoxChanged" x:Name="oneQuestionTimeLimitCheckBox" Padding="0 0 10 0" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Width="auto" Content="Use time limit at questions"></CheckBox>
+                <local1:TimeSetterUserControl x:Name = "taskTimeLimitTimeSetter" Grid.Column="1" Grid.Row="0" IsEnabled="False"/>
+                <local1:TimeSetterUserControl x:Name = "oneQuestionTimeLimitTimeSetter" Grid.Column="1" Grid.Row="1" IsEnabled="False"/>
             </Grid>
-
         </Grid>
 
         <Label Padding="0 0 10 0" FontSize="25" Foreground="Green" VerticalAlignment="Center" Grid.Column="8">Time: </Label>

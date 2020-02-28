@@ -36,12 +36,12 @@ namespace Examiner.ModeClasses
             CurrentQuestion = this.questionsAndAnswer.ElementAt(0);
         }
 
-        public void PreviousQuestion(object sender, RoutedEventArgs e)
+        virtual public void PreviousQuestion(object sender, RoutedEventArgs e)
         {
 
         }
 
-        public void NextQuestion(object sender, RoutedEventArgs e)
+        virtual public void NextQuestion(object sender, RoutedEventArgs e)
         {
 
         }

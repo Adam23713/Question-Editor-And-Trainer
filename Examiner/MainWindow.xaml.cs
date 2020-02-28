@@ -38,12 +38,15 @@ namespace Examiner
         #endregion
 
         private TaskMode taskMode = null;
+        private System.Windows.Media.Effects.Effect bodyEffect = null;
         TaskModeFactory.Mode selectedTaskMode = TaskModeFactory.Mode.TrainingMode;
 
         public MainWindow()
         {
             InitializeComponent();
             FileName = string.Empty;
+            bodyEffect = bodyGrid.Effect;
+            bodyGrid.Effect = null;
             taskMode = TaskModeFactory.CreateMode(selectedTaskMode);
             this.Icon = Common.QuestionsAndAnswers.ToBitmapImage(Properties.Resources.Question);
             InitEvents();
@@ -57,6 +60,13 @@ namespace Examiner
             taskMode.LoadQuestion += LoadCurrentQuestion;
             nextButton.Click += taskMode.NextQuestion;
             previousButton.Click += taskMode.PreviousQuestion;
+            trainingModePanel.SetNextButton += SetNextButton;
+        }
+
+        private void SetNextButton(bool value)
+        {
+            nextButton.IsEnabled = value;
+            nextButton.Visibility = (value) ? Visibility.Visible : Visibility.Hidden;
         }
 
         void LoadNewImage(BitmapImage bitmap)
@@ -78,6 +88,8 @@ namespace Examiner
             if (selectedTaskMode == TaskModeFactory.Mode.TrainingMode)
             {
                 tabControl.SelectedIndex = 1;
+                trainingModePanel.IsEnabled = true;
+                bodyGrid.Effect = bodyEffect;
             }
             if (selectedTaskMode == TaskModeFactory.Mode.TrainingMode)
             {
