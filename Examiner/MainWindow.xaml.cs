@@ -1,6 +1,6 @@
 ﻿using Common;
 using System;
-using Examiner.ModeClasses;
+using Examiner.BaseClasses;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -65,6 +65,7 @@ namespace Examiner
             nextButton.Click += taskMode.NextQuestion;
             previousButton.Click += taskMode.PreviousQuestion;
             trainingModePanel.StartTask += taskMode.StartTask;
+            trainingModePanel.SetNextButton += taskMode.SetAutomaticShifting;
 
             //Training Panel
             trainingModePanel.SetNextButton += SetNextButton;
@@ -72,7 +73,7 @@ namespace Examiner
             
         }
 
-        private void ShowBodyGrid(bool started)
+        private void ShowBodyGrid(TaskSettings taskSettings, bool started)
         {
             if (started)
             {
@@ -88,6 +89,7 @@ namespace Examiner
 
         private void SetNextButton(bool value)
         {
+            value = !value;
             nextButton.IsEnabled = value;
             nextButton.Visibility = (value) ? Visibility.Visible : Visibility.Hidden;
         }

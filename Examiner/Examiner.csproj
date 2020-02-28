@@ -71,6 +71,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BaseClasses\TaskSettings.cs" />
     <Compile Include="Panels\RaceModePanel.xaml.cs">
       <DependentUpon>RaceModePanel.xaml</DependentUpon>
     </Compile>
@@ -103,9 +104,9 @@
     <Compile Include="ChoicesUserControl.xaml.cs">
       <DependentUpon>ChoicesUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ModeClasses\TaskMode.cs" />
-    <Compile Include="ModeClasses\TaskModeFactory.cs" />
-    <Compile Include="ModeClasses\TrainingMode.cs" />
+    <Compile Include="BaseClasses\TaskMode.cs" />
+    <Compile Include="BaseClasses\TaskModeFactory.cs" />
+    <Compile Include="BaseClasses\TrainingMode.cs" />
     <Compile Include="Panels\FilePanel.xaml.cs">
       <DependentUpon>FilePanel.xaml</DependentUpon>
     </Compile>

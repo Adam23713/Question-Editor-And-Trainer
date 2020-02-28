@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Examiner.ModeClasses
+namespace Examiner.BaseClasses
 {
-    class TrainingMode : TaskMode
+    public class TaskSettings
     {
     }
 }
