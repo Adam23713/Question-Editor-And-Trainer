@@ -22,7 +22,7 @@
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
 
-        <Button x:Name="openButton" Margin="5 5" Grid.Column="0" BorderThickness="0" Width="auto">
+        <Button x:Name="startButton" Margin="5 5" Grid.Column="0" BorderThickness="0" Width="auto" Click="StartButton_Click">
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
                     <Setter Property="Background">

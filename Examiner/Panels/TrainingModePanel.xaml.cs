@@ -21,7 +21,11 @@ namespace Examiner.Panels
     public partial class TrainingModePanel : UserControl
     {
         public delegate void CheckBoxCheckedChanged(bool value);
+        public delegate void Start(bool started);
+
         public CheckBoxCheckedChanged SetNextButton;
+        public Start StartTask;
+        private bool startButtonPressed = false;
 
         public TrainingModePanel()
         {
@@ -41,6 +45,26 @@ namespace Examiner.Panels
         private void AutoShiftingCheckBox_CheckedChange(object sender, RoutedEventArgs e)
         {
             SetNextButton?.Invoke(!(bool)autoShiftingCheckBox.IsChecked);
+        }
+
+        private void StartButton_Click(object sender, RoutedEventArgs e)
+        {
+            startButtonPressed = !startButtonPressed;
+
+            if (StartTask != null)
+            {
+                ImageBrush buttonBackground = new ImageBrush();
+                if (startButtonPressed)
+                {
+                    buttonBackground.ImageSource = Common.QuestionsAndAnswers.ToBitmapImage(Properties.Resources.Restart);
+                }
+                else
+                {
+                    buttonBackground.ImageSource = Common.QuestionsAndAnswers.ToBitmapImage(Properties.Resources.Start);
+                }
+                startButton.Background = buttonBackground;
+                StartTask(startButtonPressed);
+            }
         }
     }
 }

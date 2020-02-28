@@ -55,12 +55,35 @@ namespace Examiner
         private void InitEvents()
         {
             this.Closing += ExitFromApplication;
+
+            //File Panel
             filePanel.LoadData += LoadedQuestionsAndAnswers;
             filePanel.ExitFromProgram += ExitFromApplication;
+
+            //Task Mode
             taskMode.LoadQuestion += LoadCurrentQuestion;
             nextButton.Click += taskMode.NextQuestion;
             previousButton.Click += taskMode.PreviousQuestion;
+            trainingModePanel.StartTask += taskMode.StartTask;
+
+            //Training Panel
             trainingModePanel.SetNextButton += SetNextButton;
+            trainingModePanel.StartTask += ShowBodyGrid;
+            
+        }
+
+        private void ShowBodyGrid(bool started)
+        {
+            if (started)
+            {
+                bodyGrid.Effect = null;
+                bodyGrid.IsEnabled = true;
+            }
+            else
+            {
+                bodyGrid.Effect = bodyEffect;
+                bodyGrid.IsEnabled = false;
+            }
         }
 
         private void SetNextButton(bool value)

@@ -36,6 +36,22 @@ namespace Examiner.ModeClasses
             CurrentQuestion = this.questionsAndAnswer.ElementAt(0);
         }
 
+        public virtual void StartTask(bool started)
+        {
+            if (started)
+            {
+                Start();
+            }
+            else
+            {
+                Stop();
+            }
+        }
+
+        public virtual void Start() { }
+
+        public virtual void Stop() { }
+
         virtual public void PreviousQuestion(object sender, RoutedEventArgs e)
         {
 

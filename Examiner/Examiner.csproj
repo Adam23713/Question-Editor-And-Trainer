@@ -227,5 +227,11 @@
   <ItemGroup>
     <Resource Include="Licenses\StopIcon.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Restart.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Licenses\RestartIcon.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
