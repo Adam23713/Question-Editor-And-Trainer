@@ -70,7 +70,6 @@ namespace Examiner
             //Training Panel
             trainingModePanel.SetNextButton += SetNextButton;
             trainingModePanel.StartTask += ShowBodyGrid;
-            
         }
 
         private void ShowBodyGrid(TaskSettings taskSettings, bool started)
@@ -115,8 +114,9 @@ namespace Examiner
                 tabControl.SelectedIndex = 1;
                 trainingModePanel.IsEnabled = true;
                 bodyGrid.Effect = bodyEffect;
+                taskMode.SetTimeLabel = trainingModePanel.SetTimeLabel;
             }
-            if (selectedTaskMode == TaskModeFactory.Mode.TrainingMode)
+            if (selectedTaskMode == TaskModeFactory.Mode.RaceMode)
             {
                 return;
             }

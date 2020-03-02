@@ -33,6 +33,14 @@ namespace Examiner.Panels
             InitializeComponent();
         }
 
+        public void SetTimeLabel(int hour, int minute, int second)
+        {
+            string hourStr = (hour < 10) ? "0" + hour.ToString() : hour.ToString();
+            string minuteStr = (minute < 10) ? "0" + minute.ToString() : minute.ToString();
+            string secondtr = (second < 10) ? "0" + second.ToString() : second.ToString();
+            timeLabel.Content = hourStr + ":" + minuteStr + ":" + secondtr;
+        }
+
         private void TaskTimeCheckBoxChanged(object sender, RoutedEventArgs e)
         {
             taskTimeLimitTimeSetter.IsEnabled = (bool)taskTimeLimitCheckBox.IsChecked;
@@ -50,7 +58,12 @@ namespace Examiner.Panels
 
         private TaskSettings GetSettings()
         {
-            return null;
+            TaskSettings settings = new TaskSettings();
+            settings.TaskTimeLimit = taskTimeLimitTimeSetter.GetTime;
+            settings.QuestionTimeLimit = oneQuestionTimeLimitTimeSetter.GetTime;
+            settings.isTaskLimitActive = (bool)taskTimeLimitCheckBox.IsChecked;
+            settings.isQuestionLimitActive = (bool)oneQuestionTimeLimitCheckBox.IsChecked;
+            return settings;
         }
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
