@@ -21,6 +21,10 @@ namespace Examiner
     /// </summary>
     public partial class ChoicesUserControl : UserControl
     {
+        public delegate void ClickButtonEvent(string answer, bool right);
+        public ClickButtonEvent SendClickEvent;
+
+        private bool automaticShift = true;
         private int currentRowIndex = -1;
         private int currentColumnIndex = 0;
         private List<AnswerButton> answersButtons = new List<AnswerButton>();
@@ -30,12 +34,26 @@ namespace Examiner
             InitializeComponent();
         }
 
+        public void Reset(bool useDefault = true)
+        {
+            currentRowIndex = -1;
+            currentColumnIndex = 0;
+            listViewGrid.Children.Clear();
+            answersButtons = new List<AnswerButton>();
+        }
+
         public void ShowAnswers(List<Answer> answers)
         {
+            Reset();
             foreach (var answer in answers)
             {
                 AddNewAnswer(answer);
             }
+        }
+
+        public void SetAutomaticShifting(bool value)
+        {
+            automaticShift = value;
         }
 
         private void AddNewAnswer(Answer answer)
@@ -61,11 +79,24 @@ namespace Examiner
             {
                 currentColumnIndex = 1;
             }
-
+            bt.SendClickEvent += ClickEvent;
             Grid.SetRow(bt, currentRowIndex);
             Grid.SetColumn(bt, currentColumnIndex);
             answersButtons.Add(bt);
             listViewGrid.Children.Add(bt);
+        }
+
+        public void ClickEvent(string text, bool isRight)
+        {
+            if (!automaticShift)
+            {
+                foreach (var bt in answersButtons)
+                {
+                    bt.GetAnswerByColor();
+                    bt.IsEnabled = false;
+                }
+            }
+            SendClickEvent(text, isRight);
         }
     }
 }

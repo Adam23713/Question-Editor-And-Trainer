@@ -43,12 +43,15 @@
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Opacity" Value="0.6"/>
                         </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.4"/>
+                        </Trigger>
                     </Style.Triggers>
                 </Style>
             </Button.Style>
         </Button>
 
-        <Button x:Name="pauseButton" Grid.Column="2" BorderThickness="0" Width="auto">
+        <Button x:Name="pauseButton" Grid.Column="2" BorderThickness="0" Width="auto" IsEnabled="False" Click="PauseButton_Click">
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
                     <Setter Property="Background">
@@ -69,12 +72,15 @@
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Opacity" Value="0.6"/>
                         </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.4"/>
+                        </Trigger>
                     </Style.Triggers>
                 </Style>
             </Button.Style>
         </Button>
 
-        <Button Margin="5 5" x:Name="stopButton" Grid.Column="4" BorderThickness="0" Width="auto">
+        <Button Margin="5 5" x:Name="stopButton" Grid.Column="4" BorderThickness="0" Width="auto" IsEnabled="False" Click="StopButton_Click">
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
                     <Setter Property="Background">
@@ -95,18 +101,31 @@
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Opacity" Value="0.6"/>
                         </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.4"/>
+                        </Trigger>
                     </Style.Triggers>
                 </Style>
             </Button.Style>
         </Button>
 
-        <Grid Height="50" Grid.Column="6">
+        <Grid Height="50" Grid.Column="6" x:Name="checkBoxesGrid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <CheckBox Checked="AutoShiftingCheckBox_CheckedChange" Unchecked="AutoShiftingCheckBox_CheckedChange" x:Name="autoShiftingCheckBox" IsChecked="True" Padding="0 0 20 0" Grid.Column="0" VerticalAlignment="Center" Width="auto" Content="Automatic shifting"></CheckBox>
 
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Style.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.3"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+
+            <CheckBox Checked="AutoShiftingCheckBox_CheckedChange" Unchecked="AutoShiftingCheckBox_CheckedChange" x:Name="autoShiftingCheckBox" IsChecked="True" Padding="0 0 20 0" Grid.Column="0" VerticalAlignment="Center" Width="auto" Content="Automatic shifting"></CheckBox>
             <Grid Height="auto" Grid.Column="1" VerticalAlignment="Center">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>

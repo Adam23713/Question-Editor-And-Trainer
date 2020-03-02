@@ -8,7 +8,7 @@ namespace Examiner.BaseClasses
 {
     class TaskModeFactory
     {
-        public enum Mode { TrainingMode, RaceMode};
+        public enum Mode { TrainingMode, RaceMode, Unknow };
 
         public static TaskMode CreateMode(Mode mode)
         {

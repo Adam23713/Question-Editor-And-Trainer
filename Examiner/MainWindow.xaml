@@ -13,7 +13,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TabControl Grid.Row="0" x:Name ="tabControl" Margin="0" BorderThickness="0" Background="LightGray">
+        <TabControl Grid.Row="0" x:Name ="tabControl" Margin="0" BorderThickness="0" Background="LightGray" SelectionChanged="TabControl_SelectionChanged">
             <TabControl.Resources>
                 <Style TargetType="TabItem">
                     <Setter Property="Template">
@@ -40,7 +40,18 @@
                 </Style>
             </TabControl.Resources>
             <TabItem Foreground="White" Header="File">
-                <local:FileUserControl x:Name="filePanel"/>
+                <local:FileUserControl x:Name="filePanel">
+                    <local:FileUserControl.Style>
+                        <Style TargetType="local:FileUserControl">
+                            <Style.Triggers>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" Value="0.4"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </local:FileUserControl.Style>
+                </local:FileUserControl>
+
             </TabItem>
             <TabItem Foreground="White" Header="Training Mode">
                 <local1:TrainingModePanel IsEnabled="False" x:Name="trainingModePanel">
@@ -76,8 +87,11 @@
             </TabItem>
         </TabControl>
 
+        <local:ResultsViewer x:Name="resultsViewer" Grid.Row="1" Visibility="Collapsed">
+            
+        </local:ResultsViewer>
+        
         <Grid IsEnabled="False" x:Name="bodyGrid" Grid.Row="1">
-
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Style.Triggers>

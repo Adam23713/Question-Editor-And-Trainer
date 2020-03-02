@@ -71,9 +71,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BaseClasses\TaskResult.cs" />
     <Compile Include="BaseClasses\TaskSettings.cs" />
     <Compile Include="Panels\RaceModePanel.xaml.cs">
       <DependentUpon>RaceModePanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ResultsViewer.xaml.cs">
+      <DependentUpon>ResultsViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="TimeSetterUserControl.xaml.cs">
       <DependentUpon>TimeSetterUserControl.xaml</DependentUpon>
@@ -119,6 +123,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Panels\TrainingModePanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ResultsViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

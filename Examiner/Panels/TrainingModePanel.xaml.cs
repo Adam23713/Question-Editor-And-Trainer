@@ -21,16 +21,27 @@ namespace Examiner.Panels
     /// </summary>
     public partial class TrainingModePanel : UserControl
     {
-        public delegate void CheckBoxCheckedChanged(bool value);
-        public delegate void Start(TaskSettings taskSettings, bool started);
+        public delegate void BoolValueChangedEvent(bool value);
+        public delegate void Start(TaskSettings taskSettings);
+        public delegate void EmptyEvent();
 
-        public CheckBoxCheckedChanged SetNextButton;
+        public BoolValueChangedEvent SetNextButton;
+        public BoolValueChangedEvent ShowBodyGrid;
         public Start StartTask;
+        public EmptyEvent StopTask;
+        public EmptyEvent PauseTask;
+        public EmptyEvent Continue;
         private bool startButtonPressed = false;
+        private bool pauseButtonPressed = false;
 
         public TrainingModePanel()
         {
             InitializeComponent();
+        }
+
+        public void Finished()
+        {
+            DefaultState();
         }
 
         public void SetTimeLabel(int hour, int minute, int second)
@@ -68,22 +79,72 @@ namespace Examiner.Panels
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
-            startButtonPressed = !startButtonPressed;
-
             if (StartTask != null)
             {
-                ImageBrush buttonBackground = new ImageBrush();
-                if (startButtonPressed)
+                if (!startButtonPressed)
                 {
+                    startButtonPressed = !startButtonPressed;
+                    ImageBrush buttonBackground = new ImageBrush();
                     buttonBackground.ImageSource = Common.QuestionsAndAnswers.ToBitmapImage(Properties.Resources.Restart);
+                    checkBoxesGrid.IsEnabled = false;
+                    stopButton.IsEnabled = true;
+                    pauseButton.IsEnabled = true;
+                    StartTask(GetSettings());
+                    ShowBodyGrid(true);
+                    startButton.Background = buttonBackground;
                 }
                 else
                 {
-                    buttonBackground.ImageSource = Common.QuestionsAndAnswers.ToBitmapImage(Properties.Resources.Start);
+                    StopTask();
+                    StartTask(GetSettings());
                 }
-                startButton.Background = buttonBackground;
-                StartTask(GetSettings(), startButtonPressed);
+                
             }
         }
+
+        private void PauseButton_Click(object sender, RoutedEventArgs e)
+        {
+            pauseButtonPressed = !pauseButtonPressed;
+            ImageBrush buttonBackground = new ImageBrush();
+            if (pauseButtonPressed)
+            {
+               
+                buttonBackground.ImageSource = Common.QuestionsAndAnswers.ToBitmapImage(Properties.Resources.Start);
+                startButton.IsEnabled = false;
+                ShowBodyGrid(false);
+                PauseTask();
+            }
+            else
+            {
+                buttonBackground.ImageSource = Common.QuestionsAndAnswers.ToBitmapImage(Properties.Resources.Pause);
+                startButton.IsEnabled = true;
+                ShowBodyGrid(true);
+                Continue();
+            }
+            pauseButton.Background = buttonBackground;
+        }
+
+        private void StopButton_Click(object sender, RoutedEventArgs e)
+        {
+            DefaultState();
+            ShowBodyGrid(false);
+            StopTask();
+        }
+
+        private void DefaultState()
+        {
+            ImageBrush pauseButtonBackground = new ImageBrush();
+            ImageBrush startButtonBackground = new ImageBrush();
+            startButtonBackground.ImageSource = Common.QuestionsAndAnswers.ToBitmapImage(Properties.Resources.Start);
+            pauseButtonBackground.ImageSource = Common.QuestionsAndAnswers.ToBitmapImage(Properties.Resources.Pause);
+            startButton.Background = startButtonBackground;
+            pauseButton.Background = pauseButtonBackground;
+            checkBoxesGrid.IsEnabled = true;
+            startButton.IsEnabled = true;
+            stopButton.IsEnabled = false;
+            pauseButton.IsEnabled = false;
+            startButtonPressed = false;
+            pauseButtonPressed = false;
+    }
     }
 }

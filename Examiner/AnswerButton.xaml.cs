@@ -20,6 +20,9 @@ namespace Examiner
     /// </summary>
     public partial class AnswerButton : UserControl
     {
+        public delegate void ClickEvent(string answer, bool right);
+        public ClickEvent SendClickEvent;
+
         public bool IsRight { get; private set; }
         public string Text 
         {
@@ -28,11 +31,28 @@ namespace Examiner
         }
         private string text;
 
+        public void GetAnswerByColor()
+        {
+            if (IsRight)
+            {
+                button.Background = Brushes.LightGreen;
+            }
+            else
+            {
+                button.Background = Brushes.Red;
+            }
+        }
+
         public AnswerButton(string answer, bool right)
         {
             InitializeComponent();
             Text = answer;
             IsRight = right;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            SendClickEvent(text, IsRight);
         }
     }
 }
