@@ -21,7 +21,16 @@ namespace QuestionsAndAnswers
     public partial class AnswerTextBox : UserControl
     {
         public bool Check { get; private set; } = false;
-        public string Text { get { return textBox.Text; } set { textBox.Text = value; } }
+
+
+        //public string Text { get { return textBox.Text; } set { textBox.Text = value; } }
+        public string Text
+        {
+            get { return textBox.Text; }
+            set { textBox.Text = value; this.Height = textBox.Height;}
+        }
+
+
         private BitmapImage rightImg = null;
         private BitmapImage wrongImg = null;
 
@@ -31,6 +40,7 @@ namespace QuestionsAndAnswers
             rightImg = Common.QuestionsAndAnswers.ToBitmapImage(Properties.Resources.right);
             wrongImg = Common.QuestionsAndAnswers.ToBitmapImage(Properties.Resources.cancel);
             checkButtonBrush.ImageSource = wrongImg;
+            checkButton.Height = textBox.Height;
         }
 
         public void SetButton(bool value)

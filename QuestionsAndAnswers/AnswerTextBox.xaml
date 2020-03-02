@@ -5,21 +5,36 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:QuestionsAndAnswers"
              mc:Ignorable="d" 
-             d:DesignHeight="32" d:DesignWidth="200">
+             d:DesignHeight="25" d:DesignWidth="200">
 
-    <Grid Background="#545d6a" Margin="10 10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto">
+    <Grid Background="#a6a8b7" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="50"></ColumnDefinition>
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
 
-        <TextBox x:Name="textBox" Grid.Column="0" HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="" VerticalAlignment="Center" TextAlignment="Center" FontSize="16"  Background="#6798f1" Foreground="White" Height="30"/>
-        <Button x:Name="checkButton" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Height="30" Click="CheckButton_Click">
-            <Button.Background>
-                <ImageBrush x:Name="checkButtonBrush"/>
-            </Button.Background>
-        </Button>
+        <TextBox BorderThickness="0" x:Name="textBox" Grid.Column="0" HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="" VerticalAlignment="Center" TextAlignment="Center" FontSize="16" Background="#6798f1" Foreground="White" Height="auto"/>
+        <Grid Background="#65687c" Grid.Column="1" Grid.Row="1" Height="auto" Width="auto">
+            <Button x:Name="checkButton" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Height="auto" Click="CheckButton_Click">
+                <Button.Background>
+                    <ImageBrush x:Name="checkButtonBrush"/>
+                </Button.Background>
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" Value="0.9"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
 
+        </Grid>
+        
 
     </Grid>
 </UserControl>

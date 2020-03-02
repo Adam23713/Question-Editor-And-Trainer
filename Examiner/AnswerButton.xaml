@@ -16,7 +16,7 @@
         </Grid.RowDefinitions>
 
         <Button Foreground="White" FontSize="16" x:Name="button" Grid.Column="0" BorderThickness="0" Width="auto" Height="auto" Click="Button_Click">
-            <TextBlock x:Name="textBox" TextWrapping="Wrap">This is a fairly long button label label label</TextBlock>
+            <TextBlock x:Name="textBox" TextWrapping="Wrap"></TextBlock>
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
                     <Setter Property="Background" Value="#e68a00">

@@ -411,6 +411,7 @@ namespace QuestionsAndAnswers
 
         private void SaveAsClick(object sender, RoutedEventArgs e)
         {
+            SaveCurrentQuestion();
             SaveDataToFile(true);
         }
 

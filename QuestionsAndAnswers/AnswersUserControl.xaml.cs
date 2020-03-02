@@ -113,6 +113,14 @@ namespace QuestionsAndAnswers
         private void AddNewAnswer()
         {
             AnswerTextBox bt = new AnswerTextBox();
+            Thickness padding = bt.Padding;
+            padding.Left = 10;
+            padding.Top = 10;
+            padding.Right = 10;
+            padding.Bottom = 10;
+            bt.Padding = padding;
+
+
             int size = answersButtons.Count;
             if (size % 2 == 0)
             {
