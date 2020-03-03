@@ -33,9 +33,10 @@ namespace Examiner
 
         public void GetAnswerByColor()
         {
+            button.Foreground = Brushes.Black;
             if (IsRight)
             {
-                button.Background = Brushes.LightGreen;
+                button.Background = Brushes.Green;
             }
             else
             {

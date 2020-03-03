@@ -10,9 +10,10 @@ namespace Examiner.BaseClasses
 {
     class TrainingMode : TaskMode
     {
+        private bool waitingForNextEvent = false;
         private TimeSpan elapsedTime;
+        private TimeSpan questionElapsedTime;
         private int goodAnswers = 0;
-        private int badAnswers = 0;
         private KeyValuePair<string, bool> arrivedAnswer = new KeyValuePair<string, bool>(string.Empty, false);
 
         public TrainingMode()
@@ -28,6 +29,9 @@ namespace Examiner.BaseClasses
             }
             else
             {
+                taskTimer.Stop();
+                questionTimer.Stop();
+                waitingForNextEvent = true;
                 arrivedAnswer = new KeyValuePair<string, bool>(text, isRight);
             }
         }
@@ -38,22 +42,31 @@ namespace Examiner.BaseClasses
             {
                 goodAnswers++;
             }
-            else
-            {
-                badAnswers++;
-            }
 
             //Load Next Question
             if (currentQuestionIndex + 1 == questionsAndAnswer.Count)
             {
                 Stop();
                 IsRuning = false;
-                Finished(GenerateResult());
+                if (taskSettings.isTaskLimitActive)
+                {
+                    Finished(ActiveTaskTimeLimitResult());
+                }
+                else
+                {
+                    Finished(GenerateResult());
+                }
             }
             else
             {
                 currentQuestionIndex++;
                 CurrentQuestion = questionsAndAnswer.ElementAt(currentQuestionIndex);
+
+                //Restart Question Timer
+                questionTimer.Stop();
+                questionElapsedTime = new TimeSpan(0, 0, 0);
+                SetProgressBarValue(100);
+                if(automaticShifting) questionTimer.Start();
             }
             SetIndexLabel(currentQuestionIndex + 1, questionsAndAnswer.Count);
         }
@@ -63,33 +76,74 @@ namespace Examiner.BaseClasses
             TaskResult res = new TaskResult();
             res.ElapsedTime = elapsedTime;
             res.GoodAnswers = goodAnswers;
-            res.BadAnswers = badAnswers;
+            res.BadAnswers = questionsAndAnswer.Count - goodAnswers;
 
+            return res;
+        }
+
+        private TaskResult ActiveTaskTimeLimitResult()
+        {
+            TaskResult res = new TaskResult();
+            res.ElapsedTime = taskSettings.TaskTimeLimit - elapsedTime;
+            res.GoodAnswers = goodAnswers;
+            res.BadAnswers = questionsAndAnswer.Count - goodAnswers;
             return res;
         }
 
         protected override void Start()
         {
-            bool isTimerSetted = SetTimers();
-            if (!isTimerSetted)
+            goodAnswers = 0;
+            taskTimer = new DispatcherTimer();
+            questionTimer = new DispatcherTimer();
+            taskTimer.Interval = new TimeSpan(0, 0, 1);
+            questionTimer.Interval = new TimeSpan(0, 0, 1);
+           
+
+            if (taskSettings.isTaskLimitActive)
             {
-                taskTimer = new DispatcherTimer();
-                taskTimer.Interval = new TimeSpan(0, 0, 1);
-                taskTimer.Tick += QuestionTimer_Tick;
+                elapsedTime = taskSettings.TaskTimeLimit;
+                taskTimer.Tick += TaskTimerBack_Tick;
+                
+            }
+            else //Default
+            {
                 elapsedTime = new TimeSpan(0, 0, 0);
-                goodAnswers = 0;
-                badAnswers = 0;
-                taskTimer.Start();
+                taskTimer.Tick += TaskTimer_Tick;
             }
-            else
+
+            if (taskSettings.isQuestionLimitActive)
             {
+                questionElapsedTime = new TimeSpan(0, 0, 0);
+                questionTimer.Tick += QuestionTimer_Tick;
             }
+
+            //Set time label
+            SetTimeLabel(elapsedTime.Hours, elapsedTime.Minutes, elapsedTime.Seconds);
+
+            //Start timers
+            taskTimer.Start();
+            questionTimer.Start();
         }
 
         protected override void Stop()
         {
             taskTimer.Stop();
-            taskTimer.Tick -= QuestionTimer_Tick;
+            questionTimer.Stop();
+
+            if (taskSettings.isTaskLimitActive)
+            {
+                taskTimer.Tick -= TaskTimerBack_Tick;
+            }
+            else
+            {
+                taskTimer.Tick -= TaskTimer_Tick;
+            }
+
+            if (taskSettings.isQuestionLimitActive)
+            {
+                questionTimer.Tick -= QuestionTimer_Tick;
+            }
+            SetProgressBarValue(100);
             SetTimeLabel(0,0,0);
             currentQuestionIndex = 0;
             CurrentQuestion = questionsAndAnswer.ElementAt(currentQuestionIndex);
@@ -100,28 +154,67 @@ namespace Examiner.BaseClasses
         {
             ChangeRunningState(ModeName, State.Pause);
             taskTimer.Stop();
+            questionTimer.Stop();
         }
 
         protected override void Continue()
         {
             ChangeRunningState(ModeName, State.Runing);
-            taskTimer.Start();
+            if (automaticShifting)
+            {
+                taskTimer.Start();
+                questionTimer.Start();
+            }
+
+            if (!automaticShifting && !waitingForNextEvent)
+            {
+                taskTimer.Start();
+                questionTimer.Start();
+            }
         }
 
         public override void NextQuestion(object sender, RoutedEventArgs e)
         {
             ProcessArrivedAnswer(arrivedAnswer.Key, arrivedAnswer.Value);
             arrivedAnswer = new KeyValuePair<string, bool>(string.Empty, false);
+            taskTimer.Start();
+            questionTimer.Start();
+            waitingForNextEvent = false;
         }
 
-        protected override void QuestionTimer_Tick(object sender, EventArgs e)
+        protected override void TaskTimerBack_Tick(object sender, EventArgs e)
+        {
+            elapsedTime -= taskTimer.Interval;
+            SetTimeLabel(elapsedTime.Hours, elapsedTime.Minutes, elapsedTime.Seconds);
+
+            if (elapsedTime.TotalSeconds == 0)
+            {
+                Stop();
+                IsRuning = false;
+                Finished(ActiveTaskTimeLimitResult());
+            }
+        }
+
+        protected override void TaskTimer_Tick(object sender, EventArgs e)
         {
             elapsedTime += taskTimer.Interval;
             SetTimeLabel(elapsedTime.Hours, elapsedTime.Minutes, elapsedTime.Seconds);
         }
 
-        protected override void TaskTimer_Tick(object sender, EventArgs e)
+        protected override void QuestionTimer_Tick(object sender, EventArgs e)
         {
+            questionElapsedTime += questionTimer.Interval;
+            if (questionElapsedTime == taskSettings.QuestionTimeLimit)
+            {
+                SetProgressBarValue(0);
+                QuestionTimeOut();
+                AnswerArrived(string.Empty, false);
+                return;
+            }
+
+            float value = (float)questionElapsedTime.TotalSeconds / (float)taskSettings.QuestionTimeLimit.TotalSeconds;
+            int percent = (int)(value * 100);
+            SetProgressBarValue(100 - percent);
         }
     }
 }

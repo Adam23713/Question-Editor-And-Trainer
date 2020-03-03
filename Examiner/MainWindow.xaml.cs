@@ -60,7 +60,13 @@ namespace Examiner
             trainingModePanel.ShowBodyGrid += ShowBodyGrid;
             trainingModePanel.SetNextButton += SetNextButton;
             trainingModePanel.SetNextButton += choicesUserControl.SetAutomaticShifting;
+            trainingModePanel.ShowQuestionProgressBar += ShowProgressBar;
             resultsViewer.Close += CloseResultViewer;
+        }
+
+        private void ShowProgressBar(bool value)
+        {
+            questionProgressBar.Visibility = (value) ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void InitTaskModes()
@@ -75,10 +81,12 @@ namespace Examiner
             trainingModePanel.Continue += trainingMode.ContinueTask;
             trainingModePanel.SetNextButton += trainingMode.SetAutomaticShifting;
             trainingMode.SetTimeLabel += trainingModePanel.SetTimeLabel;
+            trainingMode.QuestionTimeOut += choicesUserControl.QuestionTimeOut;
 
 
             //Common Events
             trainingMode.Finished += Finished;
+            trainingMode.SetProgressBarValue += SetProgressBarValue;
             trainingMode.ChangeRunningState += ChangeRunningState;
             trainingMode.LoadQuestion += LoadCurrentQuestion;
             trainingMode.SetIndexLabel += SetIndexLabel;
@@ -86,6 +94,13 @@ namespace Examiner
             nextButton.Click += trainingMode.NextQuestion;
 
             availableTaskModes[TaskModeFactory.Mode.TrainingMode] = trainingMode;
+        }
+
+        private void SetProgressBarValue(int value)
+        {
+            if (value > 100 || value < 0) return;
+
+            questionProgressBar.Value = value;
         }
 
         private void CloseResultViewer()
@@ -103,11 +118,11 @@ namespace Examiner
             string txt = string.Empty;
             if (state == TaskMode.State.Runing)
             {
-                txt = "[ " + taskMode + ": Running]";
+                txt = "[" + taskMode + ": Running]";
             }
             else if (state == TaskMode.State.Default)
             {
-                txt = "[ " + taskMode + ": Default State]";
+                txt = "[" + taskMode + ": Default State]";
             }
             else if (state == TaskMode.State.Pause)
             {

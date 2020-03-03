@@ -56,6 +56,11 @@ namespace Examiner
             automaticShift = value;
         }
 
+        public void QuestionTimeOut()
+        {
+            ShowResult();
+        }
+
         private void AddNewAnswer(Answer answer)
         {
             AnswerButton bt = new AnswerButton(answer.answer, answer.right);
@@ -88,6 +93,12 @@ namespace Examiner
 
         public void ClickEvent(string text, bool isRight)
         {
+            ShowResult();
+            SendClickEvent(text, isRight);
+        }
+
+        private void ShowResult()
+        {
             if (!automaticShift)
             {
                 foreach (var bt in answersButtons)
@@ -96,7 +107,6 @@ namespace Examiner
                     bt.IsEnabled = false;
                 }
             }
-            SendClickEvent(text, isRight);
         }
     }
 }

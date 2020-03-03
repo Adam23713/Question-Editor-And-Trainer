@@ -27,6 +27,7 @@ namespace Examiner.Panels
 
         public BoolValueChangedEvent SetNextButton;
         public BoolValueChangedEvent ShowBodyGrid;
+        public BoolValueChangedEvent ShowQuestionProgressBar;
         public Start StartTask;
         public EmptyEvent StopTask;
         public EmptyEvent PauseTask;
@@ -60,6 +61,7 @@ namespace Examiner.Panels
         private void OneQuestionTimeCheckBoxChanged(object sender, RoutedEventArgs e)
         {
             oneQuestionTimeLimitTimeSetter.IsEnabled = (bool)oneQuestionTimeLimitCheckBox.IsChecked;
+            ShowQuestionProgressBar(oneQuestionTimeLimitTimeSetter.IsEnabled);
         }
 
         private void AutoShiftingCheckBox_CheckedChange(object sender, RoutedEventArgs e)

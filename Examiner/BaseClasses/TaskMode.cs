@@ -46,6 +46,7 @@ namespace Examiner.BaseClasses
         public delegate void LoadQuestionFunction(QuestionAndAnswer question);
         public delegate void SetTimeLabelFunction(int hour, int minute, int second);
         public delegate void SetIndexLabelFunction(int currentIndex, int size);
+        public delegate void SetProgressBarFunction(int value);
         public delegate void EmptyEvent();
         public delegate void FinishedEvent(TaskResult taskResult);
         public delegate void StateChangedEvent(string taskMode, State state);
@@ -53,6 +54,8 @@ namespace Examiner.BaseClasses
         public SetTimeLabelFunction SetTimeLabel;
         public SetIndexLabelFunction SetIndexLabel;
         public StateChangedEvent ChangeRunningState;
+        public SetProgressBarFunction SetProgressBarValue;
+        public EmptyEvent QuestionTimeOut;
         public FinishedEvent Finished;
         #endregion
 
@@ -70,54 +73,6 @@ namespace Examiner.BaseClasses
             currentQuestionIndex = 0;
             CurrentQuestion = this.questionsAndAnswer.ElementAt(currentQuestionIndex);
             SetIndexLabel(currentQuestionIndex + 1, questionsAndAnswer.Count);
-        }
-
-        protected bool SetTimers()
-        {
-            var taskTimeLimit = taskSettings.TaskTimeLimit;
-            var questionTimeLimit = taskSettings.QuestionTimeLimit;
-
-            if (taskSettings.isTaskLimitActive && taskSettings.isQuestionLimitActive)
-            {
-                if (taskTimeLimit.TotalSeconds < questionTimeLimit.TotalSeconds)
-                {
-                    MessageBox.Show("Task time limit is less than Question time limit", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return false;
-                }
-            }
-
-            if (taskSettings.isQuestionLimitActive && questionTimeLimit.TotalSeconds < 3)
-            {
-                MessageBox.Show("Question time limit is less than 3 sec", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-            }
-
-            if (taskSettings.isTaskLimitActive && taskTimeLimit.TotalSeconds > 0)
-            {
-                taskTimer = new DispatcherTimer();
-                taskTimer.Tick += TaskTimer_Tick;
-                taskTimer.Interval = taskTimeLimit;
-            }
-            else
-            {
-                taskTimer = null;
-            }
-
-            if (taskSettings.isQuestionLimitActive && questionTimeLimit.TotalSeconds > 0)
-            {
-                questionTimer = new DispatcherTimer();
-                questionTimer.Tick += QuestionTimer_Tick;
-                questionTimer.Interval = questionTimeLimit;
-            }
-            else
-            {
-                questionTimer = null;
-            }
-
-            if (taskTimer == null && questionTimer == null)
-                return false;
-
-            return true;
         }
 
         public virtual void SetAutomaticShifting(bool value)
@@ -158,9 +113,11 @@ namespace Examiner.BaseClasses
 
         public virtual void AnswerArrived(string text, bool isRight) { }
 
-        protected virtual void QuestionTimer_Tick(object sender, EventArgs e) { }
-
         protected virtual void TaskTimer_Tick(object sender, EventArgs e) { }
+
+        protected virtual void TaskTimerBack_Tick(object sender, EventArgs e) { }
+
+        protected virtual void QuestionTimer_Tick(object sender, EventArgs e) { }
 
         virtual public void PreviousQuestion(object sender, RoutedEventArgs e){}
 

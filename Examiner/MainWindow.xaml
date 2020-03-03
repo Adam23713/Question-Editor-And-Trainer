@@ -109,6 +109,7 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
@@ -116,9 +117,10 @@
                 <Image Name="CurrentImage" Height="300" Width="auto"/>
             </DockPanel>
             <TextBox x:Name="questionTextBox" Background="#808499" Height="125" Foreground="White" FontSize="20" Grid.Row="1" IsReadOnly="True" />
-            <Label FontSize="20" Grid.Row="2" Foreground="White" HorizontalAlignment="Center" Padding="0 10 0 10">Answers</Label>
-            <local:ChoicesUserControl x:Name="choicesUserControl" Grid.Row="3" Height="auto" Width="auto" />
-            <Grid x:Name="statusBarGrid" Grid.Row="4" Height="auto" Width="auto">
+            <ProgressBar x:Name="questionProgressBar" Grid.Row="2" Height="22" Minimum="0" Maximum="100" Value="100" Visibility="Collapsed"/>
+            <Label FontSize="20" Grid.Row="3" Foreground="White" HorizontalAlignment="Center" Padding="0 10 0 10">Answers</Label>
+            <local:ChoicesUserControl x:Name="choicesUserControl" Grid.Row="4" Height="auto" Width="auto" />
+            <Grid x:Name="statusBarGrid" Grid.Row="5" Height="auto" Width="auto">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="500*"></ColumnDefinition>
                     <ColumnDefinition Width="auto"></ColumnDefinition>
