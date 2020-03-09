@@ -111,7 +111,7 @@ namespace Examiner.BaseClasses
 
         protected virtual void Continue() { }
 
-        public virtual void AnswerArrived(string text, bool isRight) { }
+        public virtual void AnswerArrived(string text, bool isRight, int selectedIndex = -1) { }
 
         protected virtual void TaskTimer_Tick(object sender, EventArgs e) { }
 

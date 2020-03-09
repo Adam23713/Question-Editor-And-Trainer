@@ -8,54 +8,75 @@ using System.Windows.Threading;
 
 namespace Examiner.BaseClasses
 {
+    public class ArrivedData
+    {
+        public string Text;
+        public bool Right;
+        public int SelectedIndex;
+
+        public ArrivedData(string text, bool isRight, int index)
+        {
+            Text = text;
+            Right = isRight;
+            SelectedIndex = index;
+        }
+    }
+
     class TrainingMode : TaskMode
     {
         private bool waitingForNextEvent = false;
         private TimeSpan elapsedTime;
         private TimeSpan questionElapsedTime;
         private int goodAnswers = 0;
-        private KeyValuePair<string, bool> arrivedAnswer = new KeyValuePair<string, bool>(string.Empty, false);
+        private List<AnswersResult> answersResults = null; 
+        private ArrivedData arrivedAnswer = new ArrivedData(string.Empty, false, -1);
 
         public TrainingMode()
         {
             ModeName = "Training";
         }
 
-        public override void AnswerArrived(string text, bool isRight)
+        public override void AnswerArrived(string text, bool isRight, int selectedIndex)
         {
             if (automaticShifting)
             {
-                ProcessArrivedAnswer(text, isRight);
+                ProcessArrivedAnswer(text, isRight, selectedIndex);
             }
             else
             {
                 taskTimer.Stop();
                 questionTimer.Stop();
                 waitingForNextEvent = true;
-                arrivedAnswer = new KeyValuePair<string, bool>(text, isRight);
+                arrivedAnswer = new ArrivedData(text, isRight, selectedIndex);
             }
         }
 
-        private void ProcessArrivedAnswer(string text, bool isRight)
+        private void ProcessArrivedAnswer(string text, bool isRight, int selectedIndex)
         {
-            if (isRight)
-            {
-                goodAnswers++;
-            }
+            //Save result
+            if (isRight) goodAnswers++;
+            AnswersResult currentAnswersResult = new AnswersResult();
+            currentAnswersResult.Question = CurrentQuestion;
+            currentAnswersResult.SelectedAnswerIndex = selectedIndex;
+            answersResults.Add(currentAnswersResult);
+
 
             //Load Next Question
             if (currentQuestionIndex + 1 == questionsAndAnswer.Count)
             {
                 Stop();
                 IsRuning = false;
+                TaskResult result = null;
                 if (taskSettings.isTaskLimitActive)
                 {
-                    Finished(ActiveTaskTimeLimitResult());
+                    result = ActiveTaskTimeLimitResult();
                 }
                 else
                 {
-                    Finished(GenerateResult());
+                    result = GenerateResult();
                 }
+                result.AnswersResults = answersResults;
+                Finished(result);
             }
             else
             {
@@ -93,6 +114,7 @@ namespace Examiner.BaseClasses
         protected override void Start()
         {
             goodAnswers = 0;
+            answersResults = new List<AnswersResult>();
             taskTimer = new DispatcherTimer();
             questionTimer = new DispatcherTimer();
             taskTimer.Interval = new TimeSpan(0, 0, 1);
@@ -175,8 +197,8 @@ namespace Examiner.BaseClasses
 
         public override void NextQuestion(object sender, RoutedEventArgs e)
         {
-            ProcessArrivedAnswer(arrivedAnswer.Key, arrivedAnswer.Value);
-            arrivedAnswer = new KeyValuePair<string, bool>(string.Empty, false);
+            ProcessArrivedAnswer(arrivedAnswer.Text, arrivedAnswer.Right, arrivedAnswer.SelectedIndex);
+            arrivedAnswer = new ArrivedData(string.Empty, false, -1);
             taskTimer.Start();
             questionTimer.Start();
             waitingForNextEvent = false;
@@ -208,7 +230,7 @@ namespace Examiner.BaseClasses
             {
                 SetProgressBarValue(0);
                 QuestionTimeOut();
-                AnswerArrived(string.Empty, false);
+                AnswerArrived(string.Empty, false, -1);
                 return;
             }
 

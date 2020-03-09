@@ -130,7 +130,6 @@
                 <Button Visibility="Hidden" IsEnabled="False" Width="150" Margin="10 5" HorizontalAlignment="Left" BorderBrush="Black" BorderThickness="1" Grid.Column="0" Content="Previous" Background="#FF706D76" Foreground="White" FontSize="18" Name="previousButton"></Button>
                 <Label FontSize="16" Foreground="White" Name="indexLabel" Grid.Column="1">0 / 0</Label>
                 <Button Visibility="Hidden" IsEnabled="False" Width="150" Margin="10 5" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="1" Grid.Column="2" Content="Next" Background="#FF706D76" Foreground="White" FontSize="18" Name="nextButton"></Button>
-
             </Grid>
         </Grid>
        

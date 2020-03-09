@@ -20,7 +20,7 @@ namespace Examiner
     /// </summary>
     public partial class AnswerButton : UserControl
     {
-        public delegate void ClickEvent(string answer, bool right);
+        public delegate void ClickEvent(string answer, bool right, int SelectedIndex);
         public ClickEvent SendClickEvent;
 
         public bool IsRight { get; private set; }
@@ -30,6 +30,7 @@ namespace Examiner
             private set { text = value; textBox.Text = text; this.Height = button.Height; }
         }
         private string text;
+        private int Id;
 
         public void GetAnswerByColor()
         {
@@ -44,16 +45,17 @@ namespace Examiner
             }
         }
 
-        public AnswerButton(string answer, bool right)
+        public AnswerButton(string answer, bool right, int id)
         {
             InitializeComponent();
             Text = answer;
             IsRight = right;
+            this.Id = id;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            SendClickEvent(text, IsRight);
+            SendClickEvent(text, IsRight, Id);
         }
     }
 }

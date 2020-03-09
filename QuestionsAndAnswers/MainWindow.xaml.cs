@@ -115,7 +115,14 @@ namespace QuestionsAndAnswers
             SaveCurrentQuestion();
             try
             {
-                SaveDataToFile();
+                if (System.IO.Path.GetExtension(FileName).ToLower() == ".qzx")
+                {
+                    SaveDataToFile(true);
+                }
+                else
+                {
+                    SaveDataToFile();
+                }
             }
             catch (Exception ex)
             {
@@ -337,7 +344,7 @@ namespace QuestionsAndAnswers
         private void OpenClick(object sender, RoutedEventArgs e)
         {
             OpenFileDialog win = new OpenFileDialog();
-            win.Filter = "XML file (*.xml)|*.xml";
+            win.Filter = "XML file (*.xml)|*.xml|QZX file (*.qzx)|*.qzx";
             bool? result = win.ShowDialog();
             if (result == null) return;
             if ((bool)result)
@@ -346,7 +353,15 @@ namespace QuestionsAndAnswers
                 try
                 {
                     mainGrid.IsEnabled = false;
-                    var list = Common.QuestionsAndAnswers.LoadFromXml(win.FileName);
+                    List<Common.QuestionAndAnswer> list = null;
+                    if (System.IO.Path.GetExtension(win.FileName).ToLower() == ".xml")
+                    {
+                        list = Common.QuestionsAndAnswers.LoadFromXml(win.FileName);
+                    }
+                    else if (System.IO.Path.GetExtension(win.FileName).ToLower() == ".qzx")
+                    {
+                        list = Common.QuestionsAndAnswers.LoadFromQZXFile(win.FileName);
+                    }
                     StartNewTask();
                     questionsAndAnswers = list;
                     LoadQuestion();

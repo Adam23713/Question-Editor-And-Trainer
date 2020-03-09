@@ -35,14 +35,22 @@ namespace Examiner
         private void openButton_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog win = new OpenFileDialog();
-            win.Filter = "XML file (*.xml)|*.xml";
+            win.Filter = "XML file (*.xml)|*.xml|QZX file (*.qzx)|*.qzx";
             bool? result = win.ShowDialog();
             if (result == null) return;
             if ((bool)result)
             {
                 try
                 {
-                    var list = Common.QuestionsAndAnswers.LoadFromXml(win.FileName);
+                    List<Common.QuestionAndAnswer> list = null;
+                    if (System.IO.Path.GetExtension(win.FileName).ToLower() == ".xml")
+                    {
+                        list = Common.QuestionsAndAnswers.LoadFromXml(win.FileName);
+                    }
+                    else if (System.IO.Path.GetExtension(win.FileName).ToLower() == ".qzx")
+                    {
+                        list = Common.QuestionsAndAnswers.LoadFromQZXFile(win.FileName);
+                    }
                     LoadData?.Invoke(list, win.FileName);
                 }
                 catch (System.IO.FileFormatException ex)

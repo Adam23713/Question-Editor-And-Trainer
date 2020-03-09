@@ -6,6 +6,7 @@ using System.Windows.Media.Imaging;
 using System.Xml;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Windows;
 
 namespace Common
 {
@@ -148,6 +149,53 @@ namespace Common
             Bitmap img = BitmapImage2Bitmap(image);
             string base64String = BitmapToBase64String(img, ImageFormat.Png);
             return base64String;
+        }
+
+        public static List<QuestionAndAnswer> LoadFromQZXFile(string fileName)
+        {
+            string head = "** Questionnaire for Quiz Version 1.0 **";
+            List<QuestionAndAnswer> list = new List<QuestionAndAnswer>();
+
+            try
+            {
+                Encoding wind1252 = Encoding.GetEncoding(1252);
+                string[] lines = System.IO.File.ReadAllLines(fileName, wind1252);
+                if (!lines[0].Contains(head)) throw new Exception("Wrong file format");
+
+                //Process
+                for (int lineCounter = 4; lineCounter < lines.Length; )
+                {
+                    string question = lines[lineCounter];
+                    lineCounter++;
+                    List<Answer> answers = new List<Answer>();
+                    while (lines[lineCounter] != string.Empty)
+                    {
+                        answers.Add(new Answer(lines[lineCounter], false));
+                        lineCounter++;
+                    }
+                    lineCounter++;
+                    int goddAnswerIndex = Int32.Parse(lines[lineCounter]);
+                    answers[goddAnswerIndex].right = true;
+
+                    //Save current question
+                    list.Add( new QuestionAndAnswer(question, answers));
+
+                    lineCounter++;
+                    while (lines[lineCounter] == string.Empty)
+                    {
+                        lineCounter++;
+                        if (lineCounter >= lines.Length) break;
+                    }
+                    
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK,MessageBoxImage.Error);
+            }
+
+            return list;
         }
 
         public static List<QuestionAndAnswer> LoadFromXml(string fileName)

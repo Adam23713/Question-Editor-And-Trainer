@@ -21,7 +21,7 @@ namespace Examiner
     /// </summary>
     public partial class ChoicesUserControl : UserControl
     {
-        public delegate void ClickButtonEvent(string answer, bool right);
+        public delegate void ClickButtonEvent(string answer, bool right, int SelectedIndex);
         public ClickButtonEvent SendClickEvent;
 
         private bool automaticShift = true;
@@ -45,9 +45,11 @@ namespace Examiner
         public void ShowAnswers(List<Answer> answers)
         {
             Reset();
+            int buttonIndex = 0;
             foreach (var answer in answers)
             {
-                AddNewAnswer(answer);
+                AddNewAnswer(answer, buttonIndex);
+                buttonIndex++;
             }
         }
 
@@ -61,9 +63,9 @@ namespace Examiner
             ShowResult();
         }
 
-        private void AddNewAnswer(Answer answer)
+        private void AddNewAnswer(Answer answer, int buttonIndex)
         {
-            AnswerButton bt = new AnswerButton(answer.answer, answer.right);
+            AnswerButton bt = new AnswerButton(answer.answer, answer.right, buttonIndex);
             Thickness padding = bt.Padding;
             padding.Left = 10;
             padding.Top = 10;
@@ -91,10 +93,10 @@ namespace Examiner
             listViewGrid.Children.Add(bt);
         }
 
-        public void ClickEvent(string text, bool isRight)
+        public void ClickEvent(string text, bool isRight, int selectedIndex)
         {
             ShowResult();
-            SendClickEvent(text, isRight);
+            SendClickEvent(text, isRight, selectedIndex);
         }
 
         private void ShowResult()
