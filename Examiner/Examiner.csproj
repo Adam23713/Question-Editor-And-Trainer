@@ -77,10 +77,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BaseClasses\RaceMode.cs" />
     <Compile Include="BaseClasses\TaskResult.cs" />
     <Compile Include="BaseClasses\TaskSettings.cs" />
+    <Compile Include="CompetitorInfoWindow.xaml.cs">
+      <DependentUpon>CompetitorInfoWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Panels\RaceModePanel.xaml.cs">
       <DependentUpon>RaceModePanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\ViwePanel.xaml.cs">
+      <DependentUpon>ViwePanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="QuestionViewControll.xaml.cs">
       <DependentUpon>QuestionViewControll.xaml</DependentUpon>
@@ -96,6 +103,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ChoicesUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CompetitorInfoWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -132,6 +143,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Panels\TrainingModePanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panels\ViwePanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -255,6 +270,17 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Licenses\RestartIcon.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Add.png" />
+    <Resource Include="Resources\Edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Licenses\AddButtonLicense.txt" />
+    <Resource Include="Licenses\EditButtonLicense.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\delete.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -67,7 +67,7 @@
                 </local1:TrainingModePanel>
             </TabItem>
             <TabItem Foreground="White" Header="Race Mode">
-                <local1:RaceModePanel IsEnabled="False">
+                <local1:RaceModePanel IsEnabled="False" x:Name ="raceModePanel">
                     <local1:RaceModePanel.Style>
                         <Style TargetType="local1:RaceModePanel">
                             <Style.Triggers>
@@ -80,10 +80,10 @@
                 </local1:RaceModePanel>
             </TabItem>
             <TabItem Foreground="White" Header="View">
-                <local1:RaceModePanel/>
+                <local1:ViwePanel/>
             </TabItem>
             <TabItem Foreground="White" Header="Help">
-                <local1:RaceModePanel/>
+                <local1:ViwePanel/>
             </TabItem>
         </TabControl>
 

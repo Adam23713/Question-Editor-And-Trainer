@@ -75,6 +75,23 @@ namespace Examiner
 
             //Training Mode
             var trainingMode = TaskModeFactory.CreateMode(TaskModeFactory.Mode.TrainingMode);
+            var racingMode = TaskModeFactory.CreateMode(TaskModeFactory.Mode.RaceMode);
+            availableTaskModes[TaskModeFactory.Mode.TrainingMode] = trainingMode;
+            availableTaskModes[TaskModeFactory.Mode.RaceMode] = racingMode;
+
+            foreach(var item in availableTaskModes)
+            {
+                TaskMode mode = item.Value;
+
+                //Set Events
+                mode.Finished += Finished;
+                mode.SetProgressBarValue += SetProgressBarValue;
+                mode.ChangeRunningState += ChangeRunningState;
+                mode.LoadQuestion += LoadCurrentQuestion;
+                mode.SetIndexLabel += SetIndexLabel;
+            }
+
+            //Training Panel events
             trainingModePanel.StartTask += trainingMode.StartTask;
             trainingModePanel.StopTask += trainingMode.StopTask;
             trainingModePanel.PauseTask += trainingMode.PauseTask;
@@ -82,18 +99,9 @@ namespace Examiner
             trainingModePanel.SetNextButton += trainingMode.SetAutomaticShifting;
             trainingMode.SetTimeLabel += trainingModePanel.SetTimeLabel;
             trainingMode.QuestionTimeOut += choicesUserControl.QuestionTimeOut;
-
-
-            //Common Events
-            trainingMode.Finished += Finished;
-            trainingMode.SetProgressBarValue += SetProgressBarValue;
-            trainingMode.ChangeRunningState += ChangeRunningState;
-            trainingMode.LoadQuestion += LoadCurrentQuestion;
-            trainingMode.SetIndexLabel += SetIndexLabel;
             previousButton.Click += trainingMode.PreviousQuestion;
             nextButton.Click += trainingMode.NextQuestion;
 
-            availableTaskModes[TaskModeFactory.Mode.TrainingMode] = trainingMode;
         }
 
         private void SetProgressBarValue(int value)
@@ -190,11 +198,13 @@ namespace Examiner
             {
                 item.Value.SetQuestionsAndAnswers(list);
             }
-            currentMode = TaskModeFactory.Mode.TrainingMode;
+            currentMode = TaskModeFactory.Mode.RaceMode;
             choicesUserControl.SendClickEvent += availableTaskModes[currentMode].AnswerArrived;
             trainingModePanel.IsEnabled = true;
+            raceModePanel.IsEnabled = true;
+            raceModePanel.FilesPath = System.IO.Path.GetDirectoryName(FileName);
             bodyGrid.Effect = bodyEffect;
-            tabControl.SelectedIndex = 1;
+            tabControl.SelectedIndex = 2;
             ChangeRunningState(availableTaskModes[currentMode].ModeName, TaskMode.State.Default);
         }
 
@@ -227,6 +237,7 @@ namespace Examiner
                 }
                 return;
             }
+
             if (mode.IsRuning)
             {
                 return;

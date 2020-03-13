@@ -16,9 +16,9 @@ namespace Examiner.BaseClasses
             {
                 return new TrainingMode();
             }
-            if (mode == Mode.TrainingMode)
+            if (mode == Mode.RaceMode)
             {
-                return null;
+                return new RaceMode();
             }
             else
             {

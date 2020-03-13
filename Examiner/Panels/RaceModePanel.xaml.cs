@@ -20,9 +20,32 @@ namespace Examiner.Panels
     /// </summary>
     public partial class RaceModePanel : UserControl
     {
+        public string FilesPath = string.Empty;
+
         public RaceModePanel()
         {
             InitializeComponent();
+        }
+
+        private void TaskTimeCheckBoxChanged(object sender, RoutedEventArgs e)
+        {
+            taskTimeLimitTimeSetter.IsEnabled = (bool)taskTimeLimitCheckBox.IsChecked;
+        }
+
+        private void OneQuestionTimeCheckBoxChanged(object sender, RoutedEventArgs e)
+        {
+            oneQuestionTimeLimitTimeSetter.IsEnabled = (bool)oneQuestionTimeLimitCheckBox.IsChecked;
+           // ShowQuestionProgressBar(oneQuestionTimeLimitTimeSetter.IsEnabled);
+        }
+
+        private void createNewCompetitorButton_Click(object sender, RoutedEventArgs e)
+        {
+            CompetitorInfoWindow win = new CompetitorInfoWindow(FilesPath);
+            win.ShowDialog();
+            if (win.filesPath == string.Empty)
+            {
+                
+            }
         }
     }
 }
