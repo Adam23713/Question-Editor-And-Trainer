@@ -34,7 +34,7 @@ namespace Examiner
         public void SetValues(TaskResult result)
         {
             this.result = result;
-            SetTimeLabel(result.ElapsedTime.Hours, result.ElapsedTime.Minutes, result.ElapsedTime.Seconds);
+            SetTimeLabel(result.ElapsedTime.Hours, result.ElapsedTime.Minutes, result.ElapsedTime.Seconds, result.ElapsedTime.Milliseconds);
             goodAnswersLabel.Content = result.GoodAnswers.ToString();
             badAnswersLabel.Content = result.BadAnswers.ToString();
             SetChart();
@@ -50,12 +50,16 @@ namespace Examiner
             badPie.Values = new LiveCharts.ChartValues<float> { badPercentage };
         }
 
-        private void SetTimeLabel(int hour, int minute, int second)
+        private void SetTimeLabel(int hour, int minute, int second, int millisecond)
         {
             string hourStr = (hour < 10) ? "0" + hour.ToString() : hour.ToString();
             string minuteStr = (minute < 10) ? "0" + minute.ToString() : minute.ToString();
             string secondtr = (second < 10) ? "0" + second.ToString() : second.ToString();
-            timeLabel.Content = hourStr + ":" + minuteStr + ":" + secondtr;
+            string ms = string.Empty;
+            if (millisecond < 10) ms = "00" + millisecond.ToString();
+            else if (millisecond < 100) ms = "0" + millisecond.ToString();
+            else ms = millisecond.ToString();
+            timeLabel.Content = hourStr + ":" + minuteStr + ":" + secondtr + "." + ms;
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)

@@ -198,13 +198,13 @@ namespace Examiner
             {
                 item.Value.SetQuestionsAndAnswers(list);
             }
-            currentMode = TaskModeFactory.Mode.RaceMode;
+            currentMode = TaskModeFactory.Mode.TrainingMode;
             choicesUserControl.SendClickEvent += availableTaskModes[currentMode].AnswerArrived;
             trainingModePanel.IsEnabled = true;
             raceModePanel.IsEnabled = true;
             raceModePanel.FilesPath = System.IO.Path.GetDirectoryName(FileName);
             bodyGrid.Effect = bodyEffect;
-            tabControl.SelectedIndex = 2;
+            tabControl.SelectedIndex = 1;
             ChangeRunningState(availableTaskModes[currentMode].ModeName, TaskMode.State.Default);
         }
 

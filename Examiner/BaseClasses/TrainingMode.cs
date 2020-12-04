@@ -24,6 +24,7 @@ namespace Examiner.BaseClasses
 
     class TrainingMode : TaskMode
     {
+        private bool stopTimeMeasurer = false;
         private bool waitingForNextEvent = false;
         private TimeSpan elapsedTime;
         private TimeSpan questionElapsedTime;
@@ -95,7 +96,7 @@ namespace Examiner.BaseClasses
         private TaskResult GenerateResult()
         {
             TaskResult res = new TaskResult();
-            res.ElapsedTime = elapsedTime;
+            res.ElapsedTime = taskTimer.Elapsed;
             res.GoodAnswers = goodAnswers;
             res.BadAnswers = questionsAndAnswer.Count - goodAnswers;
 
@@ -111,28 +112,38 @@ namespace Examiner.BaseClasses
             return res;
         }
 
+        private void StartTimeMeasurer()
+        {
+            Task.Factory.StartNew(new Action(()=> {
+                while (!stopTimeMeasurer)
+                {
+                    System.Threading.Thread.Sleep(10);
+                    var tm = taskTimer.Elapsed;
+                    SetTimeLabel(tm.Hours, tm.Minutes, tm.Seconds, tm.Milliseconds);
+                }
+                return;
+            }));
+        }
+
         protected override void Start()
         {
             goodAnswers = 0;
             answersResults = new List<AnswersResult>();
-            taskTimer = new DispatcherTimer();
+            taskTimer = new System.Diagnostics.Stopwatch();
             questionTimer = new DispatcherTimer();
-            taskTimer.Interval = new TimeSpan(0, 0, 1);
             questionTimer.Interval = new TimeSpan(0, 0, 1);
-           
+            stopTimeMeasurer = false;
 
             if (taskSettings.isTaskLimitActive)
             {
                 elapsedTime = taskSettings.TaskTimeLimit;
-                taskTimer.Tick += TaskTimerBack_Tick;
-                
             }
             else //Default
             {
                 elapsedTime = new TimeSpan(0, 0, 0);
-                taskTimer.Tick += TaskTimer_Tick;
             }
 
+            StartTimeMeasurer();
             if (taskSettings.isQuestionLimitActive)
             {
                 questionElapsedTime = new TimeSpan(0, 0, 0);
@@ -140,7 +151,7 @@ namespace Examiner.BaseClasses
             }
 
             //Set time label
-            SetTimeLabel(elapsedTime.Hours, elapsedTime.Minutes, elapsedTime.Seconds);
+            SetTimeLabel(elapsedTime.Hours, elapsedTime.Minutes, elapsedTime.Seconds, elapsedTime.Milliseconds);
 
             //Start timers
             taskTimer.Start();
@@ -151,14 +162,15 @@ namespace Examiner.BaseClasses
         {
             taskTimer.Stop();
             questionTimer.Stop();
+            stopTimeMeasurer = true;
 
             if (taskSettings.isTaskLimitActive)
             {
-                taskTimer.Tick -= TaskTimerBack_Tick;
+              
             }
             else
             {
-                taskTimer.Tick -= TaskTimer_Tick;
+                //taskTimer.Tick -= TaskTimer_Tick;
             }
 
             if (taskSettings.isQuestionLimitActive)
@@ -166,7 +178,7 @@ namespace Examiner.BaseClasses
                 questionTimer.Tick -= QuestionTimer_Tick;
             }
             SetProgressBarValue(100);
-            SetTimeLabel(0,0,0);
+            SetTimeLabel(0,0,0,0);
             currentQuestionIndex = 0;
             CurrentQuestion = questionsAndAnswer.ElementAt(currentQuestionIndex);
             SetIndexLabel(currentQuestionIndex + 1, questionsAndAnswer.Count);
@@ -206,8 +218,8 @@ namespace Examiner.BaseClasses
 
         protected override void TaskTimerBack_Tick(object sender, EventArgs e)
         {
-            elapsedTime -= taskTimer.Interval;
-            SetTimeLabel(elapsedTime.Hours, elapsedTime.Minutes, elapsedTime.Seconds);
+            //elapsedTime -= taskTimer.Interval;
+            SetTimeLabel(elapsedTime.Hours, elapsedTime.Minutes, elapsedTime.Seconds, elapsedTime.Milliseconds);
 
             if (elapsedTime.TotalSeconds == 0)
             {
@@ -219,8 +231,8 @@ namespace Examiner.BaseClasses
 
         protected override void TaskTimer_Tick(object sender, EventArgs e)
         {
-            elapsedTime += taskTimer.Interval;
-            SetTimeLabel(elapsedTime.Hours, elapsedTime.Minutes, elapsedTime.Seconds);
+            //elapsedTime += taskTimer.Interval;
+            SetTimeLabel(elapsedTime.Hours, elapsedTime.Minutes, elapsedTime.Seconds,elapsedTime.Milliseconds);
         }
 
         protected override void QuestionTimer_Tick(object sender, EventArgs e)

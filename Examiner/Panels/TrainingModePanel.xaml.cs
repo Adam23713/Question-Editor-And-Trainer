@@ -45,12 +45,20 @@ namespace Examiner.Panels
             DefaultState();
         }
 
-        public void SetTimeLabel(int hour, int minute, int second)
+        public void SetTimeLabel(int hour, int minute, int second, int millisecond)
         {
             string hourStr = (hour < 10) ? "0" + hour.ToString() : hour.ToString();
             string minuteStr = (minute < 10) ? "0" + minute.ToString() : minute.ToString();
             string secondtr = (second < 10) ? "0" + second.ToString() : second.ToString();
-            timeLabel.Content = hourStr + ":" + minuteStr + ":" + secondtr;
+
+            //int shortMs = (millisecond / (int)10);
+            string ms = string.Empty;
+            if (millisecond < 10) ms = "00" + millisecond.ToString();
+            else if (millisecond < 100) ms = "0" + millisecond.ToString();
+            else ms = millisecond.ToString();
+
+            Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Render,
+                new Action(() => { timeLabel.Content = hourStr + ":" + minuteStr + ":" + secondtr + "." + ms; }));        
         }
 
         private void TaskTimeCheckBoxChanged(object sender, RoutedEventArgs e)

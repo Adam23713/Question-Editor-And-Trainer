@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Threading;
+using System.Diagnostics;
 
 namespace Examiner.BaseClasses
 {
@@ -37,14 +38,16 @@ namespace Examiner.BaseClasses
         }
         private bool isRuning = false;
 
-        protected DispatcherTimer taskTimer = null;
+        protected Stopwatch taskTimer = null;
         protected DispatcherTimer questionTimer = null;
+
+
         protected bool automaticShifting = true;
         protected TaskSettings taskSettings = null;
 
         #region Events
         public delegate void LoadQuestionFunction(QuestionAndAnswer question);
-        public delegate void SetTimeLabelFunction(int hour, int minute, int second);
+        public delegate void SetTimeLabelFunction(int hour, int minute, int second, int millisecond);
         public delegate void SetIndexLabelFunction(int currentIndex, int size);
         public delegate void SetProgressBarFunction(int value);
         public delegate void EmptyEvent();
